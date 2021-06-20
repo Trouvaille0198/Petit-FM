@@ -3,7 +3,7 @@ from const import *
 from logger import logger
 
 
-class Player():
+class Player:
     def __init__(self, coor=(0, 0), side=-1, position='DEFAULT'):
         self.id = random.randint(0, 65536)
         self.coor = coor
@@ -35,9 +35,9 @@ class Player():
         :param width: 范围
         :return: 随机坐标
         """
-        row = random.randint(coor[0]-width, coor[0]+width)
-        col = random.randint(coor[1]-width, coor[1]+width)
-        return (row, col)
+        row = random.randint(coor[0] - width, coor[0] + width)
+        col = random.randint(coor[1] - width, coor[1] + width)
+        return row, col
 
     # 球员操作
     def move_to(self, game, coor: tuple):
@@ -55,14 +55,14 @@ class Player():
         :param game: 比赛类实例
         :param next_player: 传给的球员
         """
-        if ball_state:
+        if self.ball_state:
             self.ball_state = False
             target_coor = next_player.coor
             # TODO 拦截判定
-            distance = int(game.field.get_distance(self.coor, next_player.coor)/10)  # 12级
+            distance = int(game.field.get_distance(self.coor, next_player.coor) / 10)  # 12级
             # TODO 补充落地范围判定逻辑
             final_coor = self.random_select_coor(target_coor, distance)  # 暂时先随机选择
-            game.field.update_ball_location(game.players.ball, (x, y))
+            game.field.update_ball_location(game.players.ball, final_coor)
 
     def scramble(self, another_player):
         """
@@ -83,11 +83,18 @@ class Player():
         win_player = random.choice((self, another_player))  # 暂时随机选
         return win_player
 
-    def overlap_judge(self):
+    def shoot(self, game, goal_keeper_player):
         """
-        可能不需要
-        持球球员遇到重合时的动作
+        射门
+        :param game: 游戏实例
+        :param goal_keeper_player: 对方守门员
         """
+        # TODO 完善射门逻辑
+        flag = random.choice([True, False])
+        if flag:
+            game.state = 1
+            side = 0 if self.side == -1 else 1
+            game.score[side] += 1
 
     def act(self, game):
         """
@@ -96,23 +103,23 @@ class Player():
         """
         if not self.done:
             for position in POSITION_LIST:
-                if position == 'DEFALUT':
+                if position == 'DEFAULT':
                     pass
-                elif position == 'DEFALUT':
+                elif position == 'DEFAULT':
                     pass
-                elif position == 'DEFALUT':
+                elif position == 'DEFAULT':
                     pass
-                elif position == 'DEFALUT':
+                elif position == 'DEFAULT':
                     pass
-                elif position == 'DEFALUT':
+                elif position == 'DEFAULT':
                     pass
-                elif position == 'DEFALUT':
+                elif position == 'DEFAULT':
                     pass
-                elif position == 'DEFALUT':
+                elif position == 'DEFAULT':
                     pass
-                elif position == 'DEFALUT':
+                elif position == 'DEFAULT':
                     pass
-                elif position == 'DEFALUT':
+                elif position == 'DEFAULT':
                     pass
                 else:
                     pass

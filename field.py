@@ -1,11 +1,11 @@
-import numpy as np
 from const import *
 from player import Player
 from ball import Ball
+import random
 import bisect
 
 
-class Field():
+class Field:
     __length = FIELD_LENGTH
     __width = FIELD_WIDTH
 
@@ -76,26 +76,26 @@ class Field():
         else:
             return tuple(coor)
 
-    def get_range_coors(self, start_row=0, end_row=FIELD_WIDTH-1, start_col=0, end_col=FIELD_LENGTH-1) -> list:
+    def get_range_coors(self, start_row=0, end_row=FIELD_WIDTH - 1, start_col=0, end_col=FIELD_LENGTH - 1) -> list:
         """
         获取指定长宽范围内的二维坐标
         :param start_row: 起始行
-        :param r_len: 终止行
+        :param end_row: 终止行
         :param start_col: 起始列
-        :param  c_len: 终止列
+        :param  end_col: 终止列
         :return: 范围内的二维坐标
         """
         return list(
-            map(lambda x: x[start_col:end_col+1],
-                self.coors[start_row:end_row+1]))
+            map(lambda x: x[start_col:end_col + 1],
+                self.coors[start_row:end_row + 1]))
 
-    def coor_content_generator(self, start_row=0, end_row=FIELD_WIDTH-1, start_col=0, end_col=FIELD_LENGTH-1):
+    def coor_content_generator(self, start_row=0, end_row=FIELD_WIDTH - 1, start_col=0, end_col=FIELD_LENGTH - 1):
         """
         指定长宽范围内二维坐标实例生成器
         :param start_row: 起始行
-        :param r_len: 终止行
+        :param end_row: 终止行
         :param start_col: 起始列
-        :param  c_len: 终止列
+        :param  end_col: 终止列
         :yield: 实例
         """
         range_coors = self.get_range_coors(start_row, end_row, start_col, end_col)
@@ -117,7 +117,7 @@ class Field():
     def get_ball_held_player(self):
         if self.ball_is_held():
             for player in self.get_all_players():
-                if player.ball_state == True:
+                if player.ball_state:
                     return player
         return None
 
@@ -141,7 +141,7 @@ class Field():
         :return: 球员实例列表
         """
         range_player = []
-        range_coor = self.get_range_coors(coor=coor, width=width)
+        range_coor = self.get_square_range_coors(coor=coor, width=width)
         for a in range_coor:
             for b in a:
                 if isinstance(b, Player) and b.side == side:
@@ -156,7 +156,7 @@ class Field():
         :param width: 从中心扩展的长度
         :return: 数量
         """
-        return len(self.get_range_player(coor, side, width))
+        return len(self.get_square_range_player(coor, side, width))
 
     def update_ball_location(self, ball, ball_coor: tuple):
         """
@@ -169,7 +169,7 @@ class Field():
         coor_content = self.get_coor_content(ball_coor)
         if self.is_out_of_border(ball_coor):
             pass
-        elif coor_content == None:
+        elif coor_content is None:
             # 空地改为球落点
             self.update_coor_content(ball_coor, ball)
             ball.coor = ball_coor
@@ -191,12 +191,12 @@ class Field():
             # 恰好移动到足球处
             player.ball_state = True
             target_coor_content.is_held = True
-            self.update_coor_content(target_coor_content, None)
+            self.update_coor_content(target_coor, None)
         elif isinstance(target_coor_content, Player):
             # 如果目标坐标是球员实例
             if target_coor_content.side == player.side:
                 # TODO与对友重叠
-                while isinstance(self.get_coor_content(target_coor)):
+                while not self.get_coor_content(target_coor):
                     # 随机增减最终坐标，直到不与球员重叠
                     target_coor = list(target_coor)
                     x = random.choice((-1, 1, 0, -2, 2))
@@ -206,9 +206,9 @@ class Field():
                     target_coor = self.adjust_out_of_border(tuple(target_coor))
             elif target_coor_content.side == -player.side:
                 # 与对手重叠，若无球球员移动到有球球员上，则应该在时间帧开始时进行逼抢判定，这里不修改
-                if target_coor_content.ball_state == False:
+                if not target_coor_content.ball_state:
                     # 若被重叠的球员没有持球，则主动移动球员不论是否持球，都应该闪避
-                    while isinstance(self.get_coor_content(target_coor)):
+                    while not self.get_coor_content(target_coor):
                         # 随机增减最终坐标，直到不与球员重叠
                         target_coor = list(target_coor)
                         x = random.choice((-1, 1, 0, -2, 2))
@@ -232,7 +232,7 @@ class Field():
         :param coor2: 坐标2
         :return: 距离的整数值
         """
-        return int(((coor1[0]-coor2[0])**2 + (coor1[1]-coor2[1])**2) ** 0.5)
+        return int(((coor1[0] - coor2[0]) ** 2 + (coor1[1] - coor2[1]) ** 2) ** 0.5)
 
     def ball_is_held(self) -> bool:
         """

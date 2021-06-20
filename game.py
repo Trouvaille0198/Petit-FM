@@ -3,7 +3,7 @@ from field import Field
 from logger import logger
 
 
-class Game():
+class Game:
     def __init__(self):
         self.score = [0, 0]
         self.field = Field()
@@ -17,7 +17,7 @@ class Game():
             pass
         elif self.state == 1:
             # 进球
-            self.init_player_location()
+            self.players.init_player_location(game)
         elif self.state == 2:
             # 出底线
             pass
