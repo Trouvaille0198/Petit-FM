@@ -94,12 +94,27 @@ class Team:
         self.players: list = []
         self.score: int = 0
         self.tactic = team_info['tactic']
+        self.data = {
+            "wing_cross": 0,
+            "wing_cross_success": 0,
+            "under_cutting": 0,
+            "under_cutting_success": 0,
+            "pull_back": 0,
+            "pull_back_success": 0,
+            "middle_attack": 0,
+            "middle_attack_success": 0,
+            "counter_attack": 0,
+            "counter_attack_success": 0
+        }
 
         self.init_players(team_info['players'])
 
     def init_players(self, players_list: list):
         for player_info in players_list:
             self.players.append(Player(player_info))
+
+    def plus_data(self, data_name: str):
+        self.data[data_name] += 1
 
     def select_tactic(self, counter_attack_permitted):
         """
@@ -304,6 +319,7 @@ class Team:
         :param another_team: 防守队伍
         :return: 是否交换球权
         """
+        self.plus_data('wing_cross')
         logger.info('\n{}尝试下底传中'.format(self.name))
         # 边锋过边卫
         wing = random.choice(self.get_location_players((Location.LW, Location.RW)))
@@ -329,6 +345,8 @@ class Team:
                     # 射门
                     goal_keeper = another_team.get_location_players((Location.GK,))[0]
                     state = self.shot_and_save(win_player, goal_keeper, assister)
+                    if state:
+                        self.plus_data('wing_cross_success')
                 else:
                     # 防守球员解围
                     logger.info('{}将球解围'.format(win_player.name))
@@ -349,6 +367,7 @@ class Team:
         :param another_team: 防守队伍
         :return: 是否交换球权
         """
+        self.plus_data('under_cutting')
         logger.info('\n{}尝试边路内切'.format(self.name))
         # 边锋过边卫
         wing = random.choice(self.get_location_players((Location.LW, Location.RW)))
@@ -368,6 +387,8 @@ class Team:
                 # 射门
                 goal_keeper = another_team.get_location_players((Location.GK,))[0]
                 state = self.shot_and_save(win_player, goal_keeper, None)
+                if state:
+                    self.plus_data('under_cutting_success')
         return True
 
     def pull_back(self, another_team: 'Team'):
@@ -376,6 +397,7 @@ class Team:
         :param another_team: 防守队伍
         :return: 是否交换球权
         """
+        self.plus_data('pull_back')
         logger.info('\n{}尝试倒三角传球'.format(self.name))
         # 边锋过边卫
         wing = random.choice(self.get_location_players((Location.LW, Location.RW)))
@@ -400,6 +422,8 @@ class Team:
                     shooter = random.choice(self.get_location_players((Location.ST, Location.CM)))
                     goal_keeper = another_team.get_location_players((Location.GK,))[0]
                     state = self.shot_and_save(shooter, goal_keeper, assister)
+                    if state:
+                        self.plus_data('pull_back_success')
         return True
 
     def middle_attack(self, another_team: 'Team'):
@@ -408,8 +432,9 @@ class Team:
         :param another_team: 防守队伍
         :return: 是否交换球权
         """
+        self.plus_data('middle_attack')
         logger.info('\n{}尝试中路渗透'.format(self.name))
-        midfielders = self.get_location_players((Location.CM, Location.LW, Location.RW))
+        midfielders = self.get_location_players((Location.CM,))
         count_dict = {}
         for _ in range(5):
             judge_list = []
@@ -430,6 +455,8 @@ class Team:
             # 射门
             goal_keeper = another_team.get_location_players((Location.GK,))[0]
             state = self.shot_and_save(win_player, goal_keeper, assister)
+            if state:
+                self.plus_data('middle_attack_success')
         else:
             # 防守球员解围
             logger.info('{}将球解围'.format(win_player.name))
@@ -451,6 +478,7 @@ class Team:
         :param another_team: 防守队伍
         :return: 是否交换球权
         """
+        self.plus_data('counter_attack')
         logger.info('\n{}尝试防守反击'.format(self.name))
         passing_player = random.choice(
             self.get_location_players((Location.GK, Location.CB, Location.LB, Location.RB,
@@ -470,6 +498,8 @@ class Team:
                 # 射门
                 goal_keeper = another_team.get_location_players((Location.GK,))[0]
                 state = self.shot_and_save(win_player, goal_keeper, assister)
+                if state:
+                    self.plus_data('counter_attack_success')
         logger.info('{}持球'.format(another_team.name))
         return True
 
@@ -482,15 +512,19 @@ class Game:
     def start(self):
         logger.info('比赛开始！')
         hold_ball_team, no_ball_team = self.init_hold_ball_team()
-        original_score = (self.lteam.score, self.rteam.score)
         counter_attack_permitted = False
         for _ in range(45):
+            original_score = (self.lteam.score, self.rteam.score)
             exchange_ball = hold_ball_team.attack(no_ball_team, counter_attack_permitted)
             if exchange_ball:
                 hold_ball_team, no_ball_team = self.exchange_hold_ball_team(hold_ball_team)
             if exchange_ball and original_score == (self.lteam.score, self.rteam.score):
-                counter_attack_permitted = not counter_attack_permitted
+                counter_attack_permitted = True
+            else:
+                counter_attack_permitted = False
         logger.info('比赛结束！ {} {}:{} {}'.format(
+            self.lteam.name, self.lteam.score, self.rteam.score, self.rteam.name))
+        print('比赛结束！ {} {}:{} {}'.format(
             self.lteam.name, self.lteam.score, self.rteam.score, self.rteam.name))
         self.show_data()
         logger.info('---------------------------------------------------------------------------')
@@ -509,13 +543,68 @@ class Game:
     def show_data(self):
         logger.info('\n赛后统计')
         logger.info('{}队'.format(self.lteam.name))
+        logger.info(self.lteam.data)
+        anal = {
+            '下底传中成功率': self.lteam.data['wing_cross_success'] / self.lteam.data['wing_cross'] if self.lteam.data[
+                'wing_cross'] else 0,
+            '边路内切成功率': self.lteam.data['under_cutting_success'] / self.lteam.data['under_cutting'] if
+            self.lteam.data[
+                'under_cutting'] else 0,
+            '倒三角成功率': self.lteam.data['pull_back_success'] / self.lteam.data['pull_back'] if self.lteam.data[
+                'pull_back'] else 0,
+            '中路渗透成功率': self.lteam.data['middle_attack_success'] / self.lteam.data['middle_attack'] if
+            self.lteam.data[
+                'middle_attack'] else 0,
+            '防守反击成功率': self.lteam.data['counter_attack_success'] / self.lteam.data['counter_attack'] if
+            self.lteam.data[
+                'counter_attack'] else 0
+        }
+        logger.info(anal)
         for player in self.lteam.players:
             logger.info('{}'.format(player.name))
             logger.info(player.data)
+            anal = {
+                '射门转化率': player.data['goals'] / player.data['shots'] if player.data['shots'] else 0,
+                '传球成功率': player.data['pass_success'] / player.data['passes'] if player.data['passes'] else 0,
+                '过人成功率': player.data['dribbles'] / player.data['dribble_success'] if player.data[
+                    'dribble_success'] else 0,
+                '抢断成功率': player.data['tackles'] / player.data['tackle_success'] if player.data['tackle_success'] else 0,
+                '争顶成功率': player.data['aerials'] / player.data['aerial_success'] if player.data['aerial_success'] else 0,
+                '扑救率': player.data['saves'] / player.data['save_success'] if player.data['save_success'] else 0
+            }
+            logger.info(anal)
+
         logger.info('\n{}队'.format(self.rteam.name))
+        logger.info(self.rteam.data)
+        anal = {
+            '下底传中成功率': self.rteam.data['wing_cross_success'] / self.rteam.data['wing_cross'] if self.rteam.data[
+                'wing_cross'] else 0,
+            '边路内切成功率': self.rteam.data['under_cutting_success'] / self.rteam.data['under_cutting'] if
+            self.rteam.data[
+                'under_cutting'] else 0,
+            '倒三角成功率': self.rteam.data['pull_back_success'] / self.rteam.data['pull_back'] if self.rteam.data[
+                'pull_back'] else 0,
+            '中路渗透成功率': self.rteam.data['middle_attack_success'] / self.rteam.data['middle_attack'] if
+            self.rteam.data[
+                'middle_attack'] else 0,
+            '防守反击成功率': self.rteam.data['counter_attack_success'] / self.rteam.data['counter_attack'] if
+            self.rteam.data[
+                'counter_attack'] else 0
+        }
+        logger.info(anal)
         for player in self.rteam.players:
             logger.info('{}'.format(player.name))
             logger.info(player.data)
+            anal = {
+                '射门转化率': player.data['goals'] / player.data['shots'] if player.data['shots'] else 0,
+                '传球成功率': player.data['pass_success'] / player.data['passes'] if player.data['passes'] else 0,
+                '过人成功率': player.data['dribbles'] / player.data['dribble_success'] if player.data[
+                    'dribble_success'] else 0,
+                '抢断成功率': player.data['tackles'] / player.data['tackle_success'] if player.data['tackle_success'] else 0,
+                '争顶成功率': player.data['aerials'] / player.data['aerial_success'] if player.data['aerial_success'] else 0,
+                '扑救率': player.data['saves'] / player.data['save_success'] if player.data['save_success'] else 0
+            }
+            logger.info(anal)
 
 
 def simulate_games(num: int = 1000):
@@ -537,4 +626,4 @@ def simulate_games(num: int = 1000):
 if __name__ == '__main__':
     # game = Game(*team_list)
     # game.start()
-    simulate_games(100)
+    simulate_games(10)
