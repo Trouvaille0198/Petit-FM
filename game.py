@@ -566,11 +566,11 @@ class Game:
             anal = {
                 '射门转化率': player.data['goals'] / player.data['shots'] if player.data['shots'] else 0,
                 '传球成功率': player.data['pass_success'] / player.data['passes'] if player.data['passes'] else 0,
-                '过人成功率': player.data['dribbles'] / player.data['dribble_success'] if player.data[
-                    'dribble_success'] else 0,
-                '抢断成功率': player.data['tackles'] / player.data['tackle_success'] if player.data['tackle_success'] else 0,
-                '争顶成功率': player.data['aerials'] / player.data['aerial_success'] if player.data['aerial_success'] else 0,
-                '扑救率': player.data['saves'] / player.data['save_success'] if player.data['save_success'] else 0
+                '过人成功率': player.data['dribble_success'] / player.data['dribbles'] if player.data[
+                    'dribbles'] else 0,
+                '抢断成功率': player.data['tackle_success'] / player.data['tackles'] if player.data['tackles'] else 0,
+                '争顶成功率': player.data['aerial_success'] / player.data['aerials'] if player.data['aerials'] else 0,
+                '扑救率': player.data['save_success'] / player.data['saves'] if player.data['saves'] else 0
             }
             logger.info(anal)
 
@@ -598,11 +598,11 @@ class Game:
             anal = {
                 '射门转化率': player.data['goals'] / player.data['shots'] if player.data['shots'] else 0,
                 '传球成功率': player.data['pass_success'] / player.data['passes'] if player.data['passes'] else 0,
-                '过人成功率': player.data['dribbles'] / player.data['dribble_success'] if player.data[
-                    'dribble_success'] else 0,
-                '抢断成功率': player.data['tackles'] / player.data['tackle_success'] if player.data['tackle_success'] else 0,
-                '争顶成功率': player.data['aerials'] / player.data['aerial_success'] if player.data['aerial_success'] else 0,
-                '扑救率': player.data['saves'] / player.data['save_success'] if player.data['save_success'] else 0
+                '过人成功率': player.data['dribble_success'] / player.data['dribbles'] if player.data[
+                    'dribbles'] else 0,
+                '抢断成功率': player.data['tackle_success'] / player.data['tackles'] if player.data['tackles'] else 0,
+                '争顶成功率': player.data['aerial_success'] / player.data['aerials'] if player.data['aerials'] else 0,
+                '扑救率': player.data['save_success'] / player.data['saves'] if player.data['saves'] else 0
             }
             logger.info(anal)
 
