@@ -60,3 +60,18 @@ def select_by_pro(pro_dict: dict):
         sum_ += value
         if ran <= sum_:
             return key
+
+
+def plus_dict(a: dict, b: dict) -> dict:
+    """
+    将两个字典相加
+    :param a: 字典a
+    :param b: 字典b
+    :return: 相加后的字典
+    """
+    for key, value in b.items():
+        if key in a:
+            a[key] += value
+        else:
+            a[key] = value
+    return a

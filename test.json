@@ -1,61 +1,44 @@
-[
-  {
+{
+  "巴塞罗那": {
     "name": "巴塞罗那",
     "players": [
       {
         "name": "阿圭罗",
         "location": "ST",
         "rating": {
-          "shooting": 80,
-          "passing": 60,
-          "dribbling": 60,
-          "interception": 20,
-          "pace": 50,
-          "strength": 50,
-          "aggression": 20,
+          "shooting": 85,
+          "passing": 75,
+          "dribbling": 74,
+          "interception": 33,
+          "pace": 74,
+          "strength": 69,
+          "aggression": 65,
           "anticipation": 70,
           "free_kick": 60,
-          "stamina": 50,
+          "stamina": 65,
           "goalkeeping": 5
         }
       },
       {
-        "name": "格列兹曼",
-        "location": "ST",
+        "name": "法蒂",
+        "location": "LM",
         "rating": {
-          "shooting": 78,
-          "passing": 55,
-          "dribbling": 67,
+          "shooting": 75,
+          "passing": 73,
+          "dribbling": 73,
           "interception": 42,
-          "pace": 67,
-          "strength": 60,
-          "aggression": 43,
-          "anticipation": 78,
-          "free_kick": 73,
-          "stamina": 70,
-          "goalkeeping": 5
-        }
-      },
-      {
-        "name": "德佩",
-        "location": "LW",
-        "rating": {
-          "shooting": 67,
-          "passing": 78,
-          "dribbling": 70,
-          "interception": 20,
-          "pace": 65,
+          "pace": 78,
           "strength": 65,
-          "aggression": 30,
-          "anticipation": 60,
-          "free_kick": 67,
-          "stamina": 77,
+          "aggression": 43,
+          "anticipation": 70,
+          "free_kick": 73,
+          "stamina": 75,
           "goalkeeping": 5
         }
       },
       {
         "name": "梅西",
-        "location": "RW",
+        "location": "RM",
         "rating": {
           "shooting": 95,
           "passing": 93,
@@ -64,25 +47,8 @@
           "pace": 87,
           "strength": 67,
           "aggression": 30,
-          "anticipation": 89,
+          "anticipation": 88,
           "free_kick": 91,
-          "stamina": 60,
-          "goalkeeping": 5
-        }
-      },
-      {
-        "name": "德容",
-        "location": "CM",
-        "rating": {
-          "shooting": 65,
-          "passing": 83,
-          "dribbling": 73,
-          "interception": 50,
-          "pace": 60,
-          "strength": 60,
-          "aggression": 40,
-          "anticipation": 76,
-          "free_kick": 65,
           "stamina": 70,
           "goalkeeping": 5
         }
@@ -91,16 +57,50 @@
         "name": "佩德里",
         "location": "CM",
         "rating": {
-          "shooting": 76,
-          "passing": 77,
-          "dribbling": 65,
-          "interception": 23,
-          "pace": 78,
-          "strength": 58,
+          "shooting": 67,
+          "passing": 78,
+          "dribbling": 70,
+          "interception": 20,
+          "pace": 65,
+          "strength": 67,
           "aggression": 30,
-          "anticipation": 64,
+          "anticipation": 60,
+          "free_kick": 67,
+          "stamina": 78,
+          "goalkeeping": 5
+        }
+      },
+      {
+        "name": "德容",
+        "location": "CM",
+        "rating": {
+          "shooting": 68,
+          "passing": 80,
+          "dribbling": 73,
+          "interception": 50,
+          "pace": 60,
+          "strength": 60,
+          "aggression": 40,
+          "anticipation": 76,
+          "free_kick": 65,
+          "stamina": 77,
+          "goalkeeping": 5
+        }
+      },
+      {
+        "name": "布斯克茨",
+        "location": "CDM",
+        "rating": {
+          "shooting": 68,
+          "passing": 85,
+          "dribbling": 72,
+          "interception": 74,
+          "pace": 65,
+          "strength": 65,
+          "aggression": 30,
+          "anticipation": 81,
           "free_kick": 60,
-          "stamina": 76,
+          "stamina": 67,
           "goalkeeping": 5
         }
       },
@@ -117,7 +117,7 @@
           "aggression": 66,
           "anticipation": 76,
           "free_kick": 60,
-          "stamina": 60,
+          "stamina": 65,
           "goalkeeping": 5
         }
       },
@@ -134,7 +134,7 @@
           "aggression": 50,
           "anticipation": 60,
           "free_kick": 50,
-          "stamina": 67,
+          "stamina": 72,
           "goalkeeping": 5
         }
       },
@@ -151,7 +151,7 @@
           "aggression": 40,
           "anticipation": 52,
           "free_kick": 40,
-          "stamina": 70,
+          "stamina": 74,
           "goalkeeping": 5
         }
       },
@@ -185,40 +185,44 @@
           "aggression": 20,
           "anticipation": 60,
           "free_kick": 60,
-          "stamina": 60,
-          "goalkeeping": 86
+          "stamina": 69,
+          "goalkeeping": 84
         }
       }
     ],
     "tactic": {
-      "name": "4-4-2",
+      "name": "4-1-4-1",
       "location": {
-        "ST": 2,
+        "ST": 1,
         "CM": 2,
-        "LW": 1,
-        "RW": 1,
+        "LW": 0,
+        "RW": 0,
         "CB": 2,
         "LB": 1,
         "RB": 1,
-        "GK": 1
+        "GK": 1,
+        "CAM": 0,
+        "LM": 1,
+        "RM": 1,
+        "CDM": 1
       },
       "probability": {
-        "wing_cross": 40,
-        "under_cutting": 20,
-        "pull_back": 20,
-        "middle_attack": 80,
-        "counter_attack": 10
+        "wing_cross": 20,
+        "under_cutting": 50,
+        "pull_back": 80,
+        "middle_attack": 30,
+        "counter_attack": 30
       }
     }
   },
-  {
+  "曼联": {
     "name": "曼联",
     "players": [
       {
         "name": "卡瓦尼",
         "location": "ST",
         "rating": {
-          "shooting": 76,
+          "shooting": 79,
           "passing": 67,
           "dribbling": 60,
           "interception": 20,
@@ -227,7 +231,7 @@
           "aggression": 20,
           "anticipation": 78,
           "free_kick": 70,
-          "stamina": 56,
+          "stamina": 64,
           "goalkeeping": 5
         }
       },
@@ -244,15 +248,15 @@
           "aggression": 43,
           "anticipation": 63,
           "free_kick": 63,
-          "stamina": 70,
+          "stamina": 73,
           "goalkeeping": 5
         }
       },
       {
         "name": "拉什福德",
-        "location": "LW",
+        "location": "LM",
         "rating": {
-          "shooting": 71,
+          "shooting": 75,
           "passing": 75,
           "dribbling": 72,
           "interception": 20,
@@ -267,9 +271,9 @@
       },
       {
         "name": "格林伍德",
-        "location": "RW",
+        "location": "RM",
         "rating": {
-          "shooting": 65,
+          "shooting": 70,
           "passing": 68,
           "dribbling": 68,
           "interception": 20,
@@ -278,7 +282,7 @@
           "aggression": 30,
           "anticipation": 69,
           "free_kick": 61,
-          "stamina": 70,
+          "stamina": 75,
           "goalkeeping": 5
         }
       },
@@ -289,13 +293,13 @@
           "shooting": 68,
           "passing": 80,
           "dribbling": 77,
-          "interception": 64,
+          "interception": 66,
           "pace": 66,
           "strength": 74,
           "aggression": 56,
           "anticipation": 77,
           "free_kick": 66,
-          "stamina": 71,
+          "stamina": 79,
           "goalkeeping": 5
         }
       },
@@ -303,10 +307,10 @@
         "name": "B费",
         "location": "CM",
         "rating": {
-          "shooting": 63,
-          "passing": 78,
+          "shooting": 71,
+          "passing": 80,
           "dribbling": 65,
-          "interception": 23,
+          "interception": 43,
           "pace": 78,
           "strength": 58,
           "aggression": 30,
@@ -320,16 +324,16 @@
         "name": "卢克肖",
         "location": "LB",
         "rating": {
-          "shooting": 65,
-          "passing": 72,
+          "shooting": 70,
+          "passing": 76,
           "dribbling": 67,
-          "interception": 73,
+          "interception": 75,
           "pace": 64,
-          "strength": 73,
+          "strength": 77,
           "aggression": 66,
           "anticipation": 70,
           "free_kick": 63,
-          "stamina": 70,
+          "stamina": 75,
           "goalkeeping": 5
         }
       },
@@ -341,12 +345,12 @@
           "passing": 64,
           "dribbling": 72,
           "interception": 70,
-          "pace": 68,
+          "pace": 78,
           "strength": 68,
           "aggression": 60,
           "anticipation": 65,
           "free_kick": 57,
-          "stamina": 73,
+          "stamina": 75,
           "goalkeeping": 5
         }
       },
@@ -363,7 +367,7 @@
           "aggression": 64,
           "anticipation": 62,
           "free_kick": 56,
-          "stamina": 71,
+          "stamina": 74,
           "goalkeeping": 5
         }
       },
@@ -397,7 +401,7 @@
           "aggression": 20,
           "anticipation": 60,
           "free_kick": 60,
-          "stamina": 60,
+          "stamina": 66,
           "goalkeeping": 80
         }
       }
@@ -407,20 +411,240 @@
       "location": {
         "ST": 2,
         "CM": 2,
+        "LW": 0,
+        "RW": 0,
+        "CB": 2,
+        "LB": 1,
+        "RB": 1,
+        "GK": 1,
+        "CAM": 0,
+        "LM": 1,
+        "RM": 1,
+        "CDM": 0
+      },
+      "probability": {
+        "wing_cross": 60,
+        "under_cutting": 20,
+        "pull_back": 90,
+        "middle_attack": 50,
+        "counter_attack": 100
+      }
+    }
+  },
+  "巴黎圣日耳曼": {
+    "name": "巴黎圣日耳曼",
+    "players": [
+      {
+        "name": "姆巴佩",
+        "location": "ST",
+        "rating": {
+          "shooting": 88,
+          "passing": 60,
+          "dribbling": 78,
+          "interception": 20,
+          "pace": 88,
+          "strength": 78,
+          "aggression": 20,
+          "anticipation": 77,
+          "free_kick": 70,
+          "stamina": 76,
+          "goalkeeping": 5
+        }
+      },
+      {
+        "name": "内马尔",
+        "location": "LW",
+        "rating": {
+          "shooting": 90,
+          "passing": 88,
+          "dribbling": 90,
+          "interception": 32,
+          "pace": 86,
+          "strength": 61,
+          "aggression": 43,
+          "anticipation": 75,
+          "free_kick": 73,
+          "stamina": 70,
+          "goalkeeping": 5
+        }
+      },
+      {
+        "name": "迪马利亚",
+        "location": "RW",
+        "rating": {
+          "shooting": 79,
+          "passing": 82,
+          "dribbling": 76,
+          "interception": 20,
+          "pace": 70,
+          "strength": 65,
+          "aggression": 30,
+          "anticipation": 78,
+          "free_kick": 57,
+          "stamina": 66,
+          "goalkeeping": 5
+        }
+      },
+      {
+        "name": "维拉蒂",
+        "location": "CAM",
+        "rating": {
+          "shooting": 68,
+          "passing": 78,
+          "dribbling": 65,
+          "interception": 20,
+          "pace": 68,
+          "strength": 67,
+          "aggression": 30,
+          "anticipation": 69,
+          "free_kick": 61,
+          "stamina": 70,
+          "goalkeeping": 5
+        }
+      },
+      {
+        "name": "维纳尔杜姆",
+        "location": "CAM",
+        "rating": {
+          "shooting": 75,
+          "passing": 78,
+          "dribbling": 72,
+          "interception": 72,
+          "pace": 70,
+          "strength": 74,
+          "aggression": 56,
+          "anticipation": 70,
+          "free_kick": 66,
+          "stamina": 71,
+          "goalkeeping": 5
+        }
+      },
+      {
+        "name": "马尔基尼奥斯",
+        "location": "CDM",
+        "rating": {
+          "shooting": 62,
+          "passing": 70,
+          "dribbling": 63,
+          "interception": 78,
+          "pace": 78,
+          "strength": 75,
+          "aggression": 30,
+          "anticipation": 70,
+          "free_kick": 65,
+          "stamina": 76,
+          "goalkeeping": 5
+        }
+      },
+      {
+        "name": "贝尔纳特",
+        "location": "LB",
+        "rating": {
+          "shooting": 65,
+          "passing": 68,
+          "dribbling": 67,
+          "interception": 70,
+          "pace": 64,
+          "strength": 70,
+          "aggression": 66,
+          "anticipation": 65,
+          "free_kick": 63,
+          "stamina": 70,
+          "goalkeeping": 5
+        }
+      },
+      {
+        "name": "阿什拉夫",
+        "location": "RB",
+        "rating": {
+          "shooting": 65,
+          "passing": 65,
+          "dribbling": 80,
+          "interception": 70,
+          "pace": 80,
+          "strength": 68,
+          "aggression": 60,
+          "anticipation": 65,
+          "free_kick": 57,
+          "stamina": 73,
+          "goalkeeping": 5
+        }
+      },
+      {
+        "name": "金彭贝",
+        "location": "CB",
+        "rating": {
+          "shooting": 58,
+          "passing": 68,
+          "dribbling": 65,
+          "interception": 75,
+          "pace": 67,
+          "strength": 77,
+          "aggression": 64,
+          "anticipation": 62,
+          "free_kick": 56,
+          "stamina": 71,
+          "goalkeeping": 5
+        }
+      },
+      {
+        "name": "拉莫斯",
+        "location": "CB",
+        "rating": {
+          "shooting": 77,
+          "passing": 75,
+          "dribbling": 62,
+          "interception": 82,
+          "pace": 70,
+          "strength": 78,
+          "aggression": 79,
+          "anticipation": 68,
+          "free_kick": 60,
+          "stamina": 64,
+          "goalkeeping": 5
+        }
+      },
+      {
+        "name": "多纳鲁马",
+        "location": "GK",
+        "rating": {
+          "shooting": 20,
+          "passing": 75,
+          "dribbling": 20,
+          "interception": 20,
+          "pace": 30,
+          "strength": 50,
+          "aggression": 20,
+          "anticipation": 60,
+          "free_kick": 60,
+          "stamina": 74,
+          "goalkeeping": 81
+        }
+      }
+    ],
+    "tactic": {
+      "name": "4-3-3",
+      "location": {
+        "ST": 1,
+        "CM": 0,
         "LW": 1,
         "RW": 1,
         "CB": 2,
         "LB": 1,
         "RB": 1,
-        "GK": 1
+        "GK": 1,
+        "CAM": 2,
+        "LM": 0,
+        "RM": 0,
+        "CDM": 1
       },
       "probability": {
-        "wing_cross": 50,
-        "under_cutting": 30,
-        "pull_back": 30,
-        "middle_attack": 20,
-        "counter_attack": 50
+        "wing_cross": 15,
+        "under_cutting": 15,
+        "pull_back": 80,
+        "middle_attack": 10,
+        "counter_attack": 20
       }
     }
   }
-]
+}

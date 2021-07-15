@@ -13,6 +13,11 @@ class Location(str, Enum):
     RB = 'RB'
     GK = 'GK'
 
+    CAM = 'CAM'
+    LM = 'LM'
+    RM = 'RM'
+    CDM = 'CDM'
+
 
 class TacticsPro(BaseModel):
     wing_cross: float
