@@ -6,7 +6,7 @@ def get_mean_range(*value, per_range: float = 0.1) -> float:
     """
     返回几个数均值的随机范围
     :param value: 值关键字
-    :param per_range: 范围
+    :param per_range: 百分比范围
     :return: 均值在一定范围内的偏移随机数
     """
     return sum(value) / len(value) * (1 + random.uniform(-per_range, per_range))

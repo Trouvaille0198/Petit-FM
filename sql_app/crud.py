@@ -77,7 +77,54 @@ def create_player(player: schemas.Player, db: Session):
     return db_player
 
 
+@db_openish
+def update_player(player_id: int, player: dict, db: Session):
+    db_player = db.query(models.Player).filter(models.Player.id == player_id).first()
+    for key, value in player.items():
+        setattr(db_player, key, value)
+    db.commit()
+    return db_player
+
+
 # endregion
 
-if __name__ == '__main__':
-    test()
+# region 教练操作
+@db_openish
+def create_coach(coach: schemas.Coach, db: Session):
+    db_coach = models.Coach(**coach.dict())
+    db.add(db_coach)
+    db.commit()
+    db.refresh(db_coach)
+    return db_coach
+
+
+@db_openish
+def update_coach(coach_id: int, coach: dict, db: Session):
+    db_coach = db.query(models.Coach).filter(models.Coach.id == coach_id).first()
+    for key, value in coach.items():
+        setattr(db_coach, key, value)
+    db.commit()
+    return db_coach
+
+
+# endregion
+
+# region 俱乐部操作
+@db_openish
+def create_club(club: schemas.Club, db: Session):
+    db_club = models.Club(**club.dict())
+    db.add(db_club)
+    db.commit()
+    db.refresh(db_club)
+    return db_club
+
+
+@db_openish
+def update_club(club_id: int, club: dict, db: Session):
+    db_club = db.query(models.Club).filter(models.Club.id == club_id).first()
+    for key, value in club.items():
+        setattr(db_club, key, value)
+    db.commit()
+    return db_club
+
+# endregion
