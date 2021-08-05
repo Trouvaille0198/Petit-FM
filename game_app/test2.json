@@ -1,0 +1,1082 @@
+{
+  "4-1-4-1": {
+    "name": "4-1-4-1",
+    "players": [
+      {
+        "name": "阿圭罗",
+        "location": "ST",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "法蒂",
+        "location": "LM",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "梅西",
+        "location": "RM",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "佩德里",
+        "location": "CM",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "德容",
+        "location": "CM",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "布斯克茨",
+        "location": "CDM",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "阿尔巴",
+        "location": "LB",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "德斯特",
+        "location": "RB",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "加西亚",
+        "location": "CB",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "皮克",
+        "location": "CB",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "特尔施特根",
+        "location": "GK",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      }
+    ],
+    "tactic": {
+      "name": "4-1-4-1",
+      "location": {
+        "ST": 1,
+        "CM": 2,
+        "LW": 0,
+        "RW": 0,
+        "CB": 2,
+        "LB": 1,
+        "RB": 1,
+        "GK": 1,
+        "CAM": 0,
+        "LM": 1,
+        "RM": 1,
+        "CDM": 1
+      },
+      "probability": {
+        "wing_cross": 15,
+        "under_cutting": 15,
+        "pull_back": 70,
+        "middle_attack": 10,
+        "counter_attack": 30
+      }
+    }
+  },
+  "4-3-3": {
+    "name": "4-3-3",
+    "players": [
+      {
+        "name": "卡瓦尼",
+        "location": "ST",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "马夏尔",
+        "location": "LW",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "拉什福德",
+        "location": "RW",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "格林伍德",
+        "location": "CM",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "博格巴",
+        "location": "CM",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "B费",
+        "location": "CDM",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "卢克肖",
+        "location": "LB",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "万比萨卡",
+        "location": "RB",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "马奎尔",
+        "location": "CB",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "林德洛夫",
+        "location": "CB",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "德赫亚",
+        "location": "GK",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      }
+    ],
+    "tactic": {
+      "name": "4-3-3",
+      "location": {
+        "ST": 1,
+        "CM": 1,
+        "LW": 1,
+        "RW": 1,
+        "CB": 2,
+        "LB": 1,
+        "RB": 1,
+        "GK": 1,
+        "CAM": 0,
+        "LM": 1,
+        "RM": 1,
+        "CDM": 0
+      },
+      "probability": {
+        "wing_cross": 15,
+        "under_cutting": 15,
+        "pull_back": 70,
+        "middle_attack": 10,
+        "counter_attack": 20
+      }
+    }
+  },
+  "4-4-2": {
+    "name": "4-4-2",
+    "players": [
+      {
+        "name": "卡瓦尼",
+        "location": "ST",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "马夏尔",
+        "location": "ST",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "拉什福德",
+        "location": "LM",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "格林伍德",
+        "location": "RM",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "博格巴",
+        "location": "CM",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "B费",
+        "location": "CM",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "卢克肖",
+        "location": "LB",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "万比萨卡",
+        "location": "RB",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "马奎尔",
+        "location": "CB",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "林德洛夫",
+        "location": "CB",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "德赫亚",
+        "location": "GK",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      }
+    ],
+    "tactic": {
+      "name": "4-4-2",
+      "location": {
+        "ST": 2,
+        "CM": 2,
+        "LW": 0,
+        "RW": 0,
+        "CB": 2,
+        "LB": 1,
+        "RB": 1,
+        "GK": 1,
+        "CAM": 0,
+        "LM": 1,
+        "RM": 1,
+        "CDM": 0
+      },
+      "probability": {
+        "wing_cross": 60,
+        "under_cutting": 20,
+        "pull_back": 90,
+        "middle_attack": 50,
+        "counter_attack": 100
+      }
+    }
+  },
+  "3-5-2": {
+    "name": "3-5-2",
+    "players": [
+      {
+        "name": "卡瓦尼",
+        "location": "ST",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "马夏尔",
+        "location": "ST",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "拉什福德",
+        "location": "LM",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "格林伍德",
+        "location": "RM",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "博格巴",
+        "location": "CM",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "B费",
+        "location": "CDM",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "卢克肖",
+        "location": "CDM",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "万比萨卡",
+        "location": "CB",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "马奎尔",
+        "location": "CB",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "林德洛夫",
+        "location": "CB",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "德赫亚",
+        "location": "GK",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      }
+    ],
+    "tactic": {
+      "name": "3-5-2",
+      "location": {
+        "ST": 2,
+        "CM": 1,
+        "LW": 0,
+        "RW": 0,
+        "CB": 3,
+        "LB": 0,
+        "RB": 0,
+        "GK": 1,
+        "CAM": 0,
+        "LM": 1,
+        "RM": 1,
+        "CDM": 2
+      },
+      "probability": {
+        "wing_cross": 40,
+        "under_cutting": 20,
+        "pull_back": 20,
+        "middle_attack": 60,
+        "counter_attack": 70
+      }
+    }
+  },
+  "4-3-1-2": {
+    "name": "4-3-1-2",
+    "players": [
+      {
+        "name": "卡瓦尼",
+        "location": "ST",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "马夏尔",
+        "location": "ST",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "拉什福德",
+        "location": "CAM",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "格林伍德",
+        "location": "CDM",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "博格巴",
+        "location": "CDM",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "B费",
+        "location": "CDM",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "卢克肖",
+        "location": "LB",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "万比萨卡",
+        "location": "RB",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "马奎尔",
+        "location": "CB",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "林德洛夫",
+        "location": "CB",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      },
+      {
+        "name": "德赫亚",
+        "location": "GK",
+        "rating": {
+          "shooting": 50,
+          "passing": 50,
+          "dribbling": 50,
+          "interception": 50,
+          "pace": 50,
+          "strength": 50,
+          "aggression": 50,
+          "anticipation": 50,
+          "free_kick": 50,
+          "stamina": 50,
+          "goalkeeping": 50
+        }
+      }
+    ],
+    "tactic": {
+      "name": "4-3-1-2",
+      "location": {
+        "ST": 2,
+        "CM": 0,
+        "LW": 0,
+        "RW": 0,
+        "CB": 2,
+        "LB": 1,
+        "RB": 1,
+        "GK": 1,
+        "CAM": 1,
+        "LM": 0,
+        "RM": 0,
+        "CDM": 3
+      },
+      "probability": {
+        "wing_cross": 30,
+        "under_cutting": 0,
+        "pull_back": 0,
+        "middle_attack": 30,
+        "counter_attack": 75
+      }
+    }
+  }
+}
