@@ -5,7 +5,7 @@ from typing import Dict, List, Sequence, Set, Tuple, Optional
 import json
 import os
 import time
-from logger import logger
+from config import logger
 import datetime
 from sql_app import crud
 from sql_app import models, schemas

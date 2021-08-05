@@ -3,6 +3,7 @@ from sql_app import models, schemas, database
 from sql_app.database import db_openish
 
 
+# region 比赛操作
 @db_openish
 def create_game(game: schemas.Game, db: Session):
     db_game = models.Game(created_time=game.created_time, date=game.date, script=game.script)
@@ -57,13 +58,26 @@ def create_game_player_data(game_team_info_id: int, game_player_data: schemas.Ga
     return db_game_player_data
 
 
+# endregion
 @db_openish
 def test(db: Session):
-    players = db.query(models.GamePlayerData).filter(models.GamePlayerData.name == '梅西',
-                                                     models.GamePlayerData.game_team_info.has(
-                                                         models.GameTeamInfo.name == '巴塞罗那')).all()
-    print([player.final_stamina for player in players])
+    player = db.query(models.GamePlayerData).filter(models.GamePlayerData.name == '梅西',
+                                                    models.GamePlayerData.game_team_info.has(
+                                                        models.GameTeamInfo.name == '巴塞罗那')).first()
+    print(player.dict())
 
+
+# region 球员操作
+@db_openish
+def create_player(player: schemas.Player, db: Session):
+    db_player = models.Player(**player.dict())
+    db.add(db_player)
+    db.commit()
+    db.refresh(db_player)
+    return db_player
+
+
+# endregion
 
 if __name__ == '__main__':
     test()

@@ -1,16 +1,5 @@
 import random
 from pathlib import Path
-from logger import logger
-
-
-def get_random_name() -> str:
-    word_list = [chr(i) for i in range(97, 123)]
-    name = ''.join([random.choice(word_list) for i in range(random.randint(3, 10))])
-    return name
-
-
-def get_random_land_name() -> str:
-    return random.choice(list(map(lambda x: str(x), range(10000, 99999))))
 
 
 def get_mean_range(*value, per_range: float = 0.1) -> float:
@@ -28,15 +17,32 @@ def get_offset(value, offset) -> float:
 
 
 def normalvariate(mu, sigma=2):
+    """
+    正态分布
+    :param mu: 平均值
+    :param sigma: 方差
+    :return: 正态分布下的随机值
+    """
     return random.normalvariate(mu, sigma)
 
 
 def retain_demical(value, n=3):
+    """
+    保留n位小数
+    :param value: 数
+    :param n: 保留小数位数
+    :return: 保留n位小数后的数
+    """
     x = 10 ** n
     return int(value * x) / x
 
 
 def is_happened_by_pro(pro):
+    """
+    根据概率判断是否发生
+    :param pro: 概率，范围0-1
+    :return: 发生为True，不发生为False
+    """
     pro = pro if pro <= 1 else 1
     pro = int(pro * 1000)
     pool = [1 for i in range(pro)] + [0 for i in range(1000 - pro)]
@@ -44,13 +50,23 @@ def is_happened_by_pro(pro):
     return flag
 
 
-def act_by_pro(pro, func, *args):
+def act_by_pro(pro, func, *args, **kwargs):
+    """
+    根据概率判断函数是否执行
+    :param pro: 概率，范围0-1
+    :param func: 待判断的函数
+    """
     flag = is_happened_by_pro(pro)
     if flag:
-        func(*args)
+        func(*args, **kwargs)
 
 
 def select_by_pro(pro_dict: dict):
+    """
+    按概率选取选项
+    :param pro_dict: 概率字典，形如{'A':60,'B':40}
+    :return: 字典键值（即选项）
+    """
     num_sum = 0
     for value in pro_dict.values():
         num_sum += value
