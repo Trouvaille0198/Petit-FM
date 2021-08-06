@@ -6,7 +6,7 @@ from config import *
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
 )
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine, expire_on_commit=False)
 
 Base = declarative_base()
 
@@ -19,7 +19,7 @@ def db_openish(func):
         Base.metadata.create_all(bind=engine)
         db = SessionLocal()
         res = func(db=db, *args, **kwargs)
-        db.close()
+        # db.close()
         return res
 
     return open_and_finish

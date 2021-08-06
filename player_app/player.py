@@ -1,16 +1,20 @@
+import random
 from config import *
 from player_app import PlayerGenerator
 import datetime
-from sql_app import schemas, crud
+from sql_app import schemas, crud, models
+from utils import utils
 
 
 class Player:
-    def __init__(self, init_type=1):
-        self.id = 0
-        self.data = dict()
+    def __init__(self, init_type: int = 1, player_id: int = 0):
+        self.id = player_id
+        self.player_model = None
+        self.data = dict()  # 初始化或待修改的数据
         if init_type == 1:
             # 随机生成
             self.generate()
+            self.import_data()
         elif init_type == 2:
             # 导入数据
             self.import_data()
@@ -28,36 +32,63 @@ class Player:
         self.data['height'] = generator.get_height()
         self.data['weight'] = generator.get_weight()
         self.data['birth_date'] = generator.get_birthday()
-        # rating generation
-        self.data['shooting'] = generator.get_rating(self.data['translated_nationality'])
-        self.data['passing'] = generator.get_rating(self.data['translated_nationality'])
-        self.data['dribbling'] = generator.get_rating(self.data['translated_nationality'])
-        self.data['interception'] = generator.get_rating(self.data['translated_nationality'])
-        self.data['pace'] = generator.get_rating(self.data['translated_nationality'])
-        self.data['strength'] = generator.get_rating(self.data['translated_nationality'])
-        self.data['aggression'] = generator.get_rating(self.data['translated_nationality'])
-        self.data['anticipation'] = generator.get_rating(self.data['translated_nationality'])
-        self.data['free_kick'] = generator.get_rating(self.data['translated_nationality'])
-        self.data['stamina'] = generator.get_rating(self.data['translated_nationality'])
-        self.data['goalkeeping'] = generator.get_rating(self.data['translated_nationality'])
         # rating limit generation
-        self.data['shooting_limit'] = generator.get_rating_potential()
-        self.data['passing_limit'] = generator.get_rating_potential()
-        self.data['dribbling_limit'] = generator.get_rating_potential()
-        self.data['interception_limit'] = generator.get_rating_potential()
-        self.data['pace_limit'] = generator.get_rating_potential()
-        self.data['strength_limit'] = generator.get_rating_potential()
-        self.data['aggression_limit'] = generator.get_rating_potential()
-        self.data['anticipation_limit'] = generator.get_rating_potential()
-        self.data['free_kick_limit'] = generator.get_rating_potential()
-        self.data['stamina_limit'] = generator.get_rating_potential()
-        self.data['goalkeeping_limit'] = generator.get_rating_potential()
+        self.data['shooting_limit'] = generator.get_rating_potential(self.data['translated_nationality'])
+        self.data['passing_limit'] = generator.get_rating_potential(self.data['translated_nationality'])
+        self.data['dribbling_limit'] = generator.get_rating_potential(self.data['translated_nationality'])
+        self.data['interception_limit'] = generator.get_rating_potential(self.data['translated_nationality'])
+        self.data['pace_limit'] = generator.get_rating_potential(self.data['translated_nationality'])
+        self.data['strength_limit'] = generator.get_rating_potential(self.data['translated_nationality'])
+        self.data['aggression_limit'] = generator.get_rating_potential(self.data['translated_nationality'])
+        self.data['anticipation_limit'] = generator.get_rating_potential(self.data['translated_nationality'])
+        self.data['free_kick_limit'] = generator.get_rating_potential(self.data['translated_nationality'])
+        self.data['stamina_limit'] = generator.get_rating_potential(self.data['translated_nationality'])
+        self.data['goalkeeping_limit'] = generator.get_rating_potential(self.data['translated_nationality'])
+        # rating generation
+        self.data['shooting'] = self.adjust_rating(
+            generator.get_rating(self.data['translated_nationality']), self.data['shooting_limit'])
+        self.data['passing'] = self.adjust_rating(
+            generator.get_rating(self.data['translated_nationality']), self.data['passing_limit'])
+        self.data['dribbling'] = self.adjust_rating(
+            generator.get_rating(self.data['translated_nationality']), self.data['dribbling_limit'])
+        self.data['interception'] = self.adjust_rating(
+            generator.get_rating(self.data['translated_nationality']), self.data['interception_limit'])
+        self.data['pace'] = self.adjust_rating(
+            generator.get_rating(self.data['translated_nationality']), self.data['pace_limit'])
+        self.data['strength'] = self.adjust_rating(
+            generator.get_rating(self.data['translated_nationality']), self.data['strength_limit'])
+        self.data['aggression'] = self.adjust_rating(
+            generator.get_rating(self.data['translated_nationality']), self.data['aggression_limit'])
+        self.data['anticipation'] = self.adjust_rating(
+            generator.get_rating(self.data['translated_nationality']), self.data['anticipation_limit'])
+        self.data['free_kick'] = self.adjust_rating(
+            generator.get_rating(self.data['translated_nationality']), self.data['free_kick_limit'])
+        self.data['stamina'] = self.adjust_rating(
+            generator.get_rating(self.data['translated_nationality']), self.data['stamina_limit'])
+        self.data['goalkeeping'] = self.adjust_rating(
+            generator.get_rating(self.data['translated_nationality']), self.data['goalkeeping_limit'])
+        # 为球员选择先天位置，并增强相应能力
+        original_location = random.choice(rating_potential)
+        self.data[original_location['name'] + '_num'] = 1
+        for key, value in original_location['offset'].items():
+            self.data[key] = utils.get_offset(self.data[key], value)
         self.save_in_db(init=True)
 
+    def update_player(self):
+        """
+        更新球员数据，并保存至数据库
+        使用时，将待修改的值送入self.data中，然后调用此函数即可
+        """
+        self.save_in_db(init=False)
+
     def import_data(self):
-        pass
+        self.player_model = crud.get_player_by_id(self.id)
 
     def export_data(self) -> schemas.Player:
+        """
+        将初始化的球员数据转换为schemas格式
+        :return: schemas.Player
+        """
         data_model = schemas.Player(**self.data)
         return data_model
 
@@ -66,17 +97,23 @@ class Player:
         导出数据至数据库
         """
         if init:
-            data = self.export_data()
-            player_model = crud.create_player(data)
+            data_schemas = self.export_data()
+            player_model = crud.create_player(data_schemas)
             self.id = player_model.id
 
         else:
             # 更新
-            pass
+            crud.update_player(player_id=self.id, attri=self.data)
         print('成功导出球员数据！')
 
     def switch_club(self, club_id: int):
-        crud.update_player(player_id=self.id, player={'club_id': club_id})
+        crud.update_player(player_id=self.id, attri={'club_id': club_id})
+
+    @staticmethod
+    def adjust_rating(rating: int, rating_limit: int):
+        rating = rating if rating > 0 else 1
+        rating = rating if rating <= rating_limit else rating_limit
+        return rating
 
 
 if __name__ == "__main__":

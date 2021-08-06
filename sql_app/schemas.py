@@ -8,7 +8,7 @@ from pydantic import BaseModel
 class GamePlayerData(BaseModel):
     # id: int
     # game_team_info_id: int
-    # player_id: int
+    player_id: int
 
     created_time: datetime
     name: str  # TODO 临时
@@ -78,6 +78,7 @@ class Game(BaseModel):
 
     created_time: datetime
     date: str
+    season: str
     script: str
 
     teams: List[GameTeamInfo]
@@ -179,4 +180,16 @@ class Club(BaseModel):
 
     coach: Coach = None
     players: List[Player] = []
+
+
+# endregion
+
+# region 联赛表
+class League(BaseModel):
+    # id: int
+
+    created_time: datetime
+    name: str
+
+    clubs: List[Club] = []
 # endregion

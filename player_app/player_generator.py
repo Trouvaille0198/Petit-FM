@@ -71,15 +71,20 @@ class PlayerGenerator:
         return int(utils.normalvariate(75, 5))
 
     @staticmethod
-    def get_rating_potential():
-        return int(utils.normalvariate(80, 5))
+    def get_rating_potential(local_nationality: str = ''):
+        mean_rating = 80
+        if local_nationality in country_potential.keys():
+            return int(utils.normalvariate(mean_rating + country_potential[local_nationality], 5))
+        else:
+            return int(utils.normalvariate(mean_rating, 5))
 
     @staticmethod
     def get_rating(local_nationality: str = ''):
+        mean_rating = 15
         if local_nationality in country_potential.keys():
-            return int(utils.normalvariate(15 + country_potential[local_nationality], 6))
+            return int(utils.normalvariate(mean_rating + country_potential[local_nationality], 6))
         else:
-            return int(utils.normalvariate(15, 6))
+            return int(utils.normalvariate(mean_rating, 6))
 
 
 if __name__ == '__main__':

@@ -1,5 +1,6 @@
 import random
 from pathlib import Path
+from decimal import *
 
 
 def get_mean_range(*value, per_range: float = 0.1) -> float:
@@ -26,15 +27,14 @@ def normalvariate(mu, sigma=2):
     return random.normalvariate(mu, sigma)
 
 
-def retain_demical(value, n=3):
+def retain_decimal(value, n=3):
     """
     保留n位小数
     :param value: 数
     :param n: 保留小数位数
     :return: 保留n位小数后的数
     """
-    x = 10 ** n
-    return int(value * x) / x
+    return Decimal("%.{}f".format(n) % value)
 
 
 def is_happened_by_pro(pro):

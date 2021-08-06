@@ -1,5 +1,6 @@
 from config import Location
 import random
+from utils.date import Date
 from utils.utils import *
 from typing import Dict, List, Sequence, Set, Tuple, Optional
 import json
@@ -9,6 +10,7 @@ from config import logger
 import datetime
 from sql_app import crud
 from sql_app import models, schemas
+from club_app import Club
 
 DEFAULT_RATING = {
     "shooting": 50,  # 射门
@@ -47,11 +49,13 @@ DEFAULT_TACTIC = {
 
 
 class Player:
-    def __init__(self, player_info: dict, stamina: int = 100):
-        self.name = player_info["name"]
-        self.location = player_info["location"]
-        self.real_location = player_info["location"]  # 记录每个回合变化后的位置
-        self.rating = player_info["rating"]
+    def __init__(self, player_model: models.Player, location: str, stamina: int = 100):
+        self.player_model = player_model
+        self.name = player_model.translated_name
+        self.location = location
+        self.real_location = location  # 记录每个回合变化后的位置
+        self.rating = dict()
+        self.init_rating()
         self.stamina = stamina
         self.data = {
             "original_stamina": self.stamina,
@@ -71,6 +75,19 @@ class Player:
             "save_success": 0
         }
 
+    def init_rating(self):
+        self.rating['shooting'] = self.player_model.shooting
+        self.rating['passing'] = self.player_model.passing
+        self.rating['dribbling'] = self.player_model.dribbling
+        self.rating['interception'] = self.player_model.interception
+        self.rating['pace'] = self.player_model.pace
+        self.rating['strength'] = self.player_model.strength
+        self.rating['aggression'] = self.player_model.aggression
+        self.rating['anticipation'] = self.player_model.anticipation
+        self.rating['free_kick'] = self.player_model.free_kick
+        self.rating['stamina'] = self.player_model.stamina
+        self.rating['goalkeeping'] = self.player_model.goalkeeping
+
     def export_game_player_data(self, created_time=datetime.datetime.now()) -> schemas.GamePlayerData:
         """
         导出数据
@@ -79,7 +96,9 @@ class Player:
         """
         data = {
             'created_time': created_time,
-            'name': self.name, 'location': self.location,
+            'player_id': self.player_model.id,
+            'name': self.name,
+            'location': self.location,
             **self.data,
             'final_stamina': self.stamina
         }
@@ -162,12 +181,14 @@ class Player:
 
 
 class Team:
-    def __init__(self, game: 'Game', team_info: dict):
+    def __init__(self, game: 'Game', team_model: models.Club):
         self.game = game
-        self.name = team_info['name']
+        self.team_model = team_model
+        self.name = team_model.name
         self.players: list = []
         self.score: int = 0
-        self.tactic = team_info['tactic']
+        self.tactic = dict()
+        self.init_tactic()
         self.data = {
             'attempts': 0,
             "wing_cross": 0,
@@ -182,7 +203,14 @@ class Team:
             "counter_attack_success": 0
         }
 
-        self.init_players(team_info['players'])
+        self.init_players()
+
+    def init_tactic(self):
+        self.tactic['wing_cross'] = self.team_model.coach.wing_cross
+        self.tactic['under_cutting'] = self.team_model.coach.under_cutting
+        self.tactic['pull_back'] = self.team_model.coach.pull_back
+        self.tactic['middle_attack'] = self.team_model.coach.middle_attack
+        self.tactic['counter_attack'] = self.team_model.coach.counter_attack
 
     def export_game_team_data(self, created_time=datetime.datetime.now()) -> schemas.GameTeamData:
         """
@@ -224,9 +252,11 @@ class Team:
         for player in self.players:
             player.rating[capa_name] = num
 
-    def init_players(self, players_list: list):
-        for player_info in players_list:
-            self.players.append(Player(player_info))
+    def init_players(self):
+        club = Club(init_type=2, club_id=self.team_model.id)
+        players_model, locations_list = club.select_players()
+        for player_model, location in zip(players_model, locations_list):
+            self.players.append(Player(player_model, location))
 
     def get_rival_team(self):
         if self.game.lteam == self:
@@ -246,8 +276,8 @@ class Team:
         :param counter_attack_permitted: 是否允许使用防反
         :return: 战术名
         """
-        tactic_pro_total = self.tactic['probability'].copy()
-        tactic_pro = self.tactic['probability'].copy()
+        tactic_pro_total = self.tactic.copy()
+        tactic_pro = self.tactic.copy()
         tactic_pro.pop("counter_attack")
         while True:
             tactic_name = select_by_pro(tactic_pro_total) if counter_attack_permitted else select_by_pro(tactic_pro)
@@ -679,13 +709,13 @@ class Team:
 
 
 class Game:
-    def __init__(self, team1_info: dict, team2_info: dict, date: str = 'test'):
-        self.lteam = Team(self, team1_info)
-        self.rteam = Team(self, team2_info)
-        self.date = date  # TODO 虚拟日期
+    def __init__(self, team1_model: models.Club, team2_model: models.Club, date: Date):
+        self.lteam = Team(self, team1_model)
+        self.rteam = Team(self, team2_model)
+        self.date = str(date)  # TODO 虚拟日期
         self.script = ''
 
-    def start(self):
+    def start(self) -> tuple:
         self.add_script('比赛开始！')
         hold_ball_team, no_ball_team = self.init_hold_ball_team()
         counter_attack_permitted = False
@@ -708,13 +738,14 @@ class Game:
         self.save_in_db()
         return self.lteam.score, self.rteam.score
 
-    def export_game(self):
+    def export_game(self) -> schemas.Game:
         created_time = datetime.datetime.now()
         teams = [self.lteam.export_game_team_info(created_time), self.rteam.export_game_team_info(created_time)]
 
         data = {
             'created_time': created_time,
             'date': self.date,
+            'season': self.date[:4],
             'script': self.script,
             'teams': teams
         }

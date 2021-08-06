@@ -4,11 +4,13 @@ import os
 import time
 from loguru import logger
 
+CWD_URL = 'C:/Users/Tyeah/PycharmProjects/Petit-FM'
+
 current_path = str(Path.cwd())
 # print(current_path)
 current_path = current_path.replace('\\', '/')
 # SQLALCHEMY_DATABASE_URL = "sqlite:///" + current_path + "/db_file/sql_app.db"
-SQLALCHEMY_DATABASE_URL = "sqlite:///" + "C:/Users/Tyeah/PycharmProjects/Petit-FM" + "/db_file/sql_app.db"  # TODO 路径会变
+SQLALCHEMY_DATABASE_URL = "sqlite:///" + CWD_URL + "/db_file/sql_app.db"  # TODO 路径会变
 
 # country
 country_potential = {
@@ -122,43 +124,116 @@ tactic_config = {
 }
 
 # clubs
-clubs = [
+leagues = [
     {
-        'name': '巴塞罗那',
-        'finance': 20000
+        'name': '世界超级联赛',
+        'clubs': [
+            {
+                'name': '巴塞罗那',
+                'finance': 20000
+            },
+            {
+                'name': '皇家马德里',
+                'finance': 20000
+            },
+            {
+                'name': '曼彻斯特联',
+                'finance': 20000
+            },
+            {
+                'name': '曼彻斯特城',
+                'finance': 20000
+            },
+            {
+                'name': 'AC米兰',
+                'finance': 20000
+            },
+            {
+                'name': '国际米兰',
+                'finance': 20000
+            },
+            {
+                'name': '巴黎圣日尔曼',
+                'finance': 20000
+            },
+            {
+                'name': '阿贾克斯',
+                'finance': 20000
+            },
+            {
+                'name': '切尔西',
+                'finance': 20000
+            },
+            {
+                'name': '利物浦',
+                'finance': 20000
+            }
+        ]
     },
     {
-        'name': '皇家马德里',
-        'finance': 20000
-    },
-    {
-        'name': '曼彻斯特联',
-        'finance': 20000
-    },
-    {
-        'name': '曼彻斯特城',
-        'finance': 20000
-    },
-    {
-        'name': 'AC米兰',
-        'finance': 20000
-    },
-    {
-        'name': '国际米兰',
-        'finance': 20000
-    },
-    {
-        'name': '巴黎圣日尔曼',
-        'finance': 20000
-    },
-    {
-        'name': '阿贾克斯',
-        'finance': 20000
-    }, {
-        'name': '拜仁慕尼黑',
-        'finance': 20000
+        'name': '世界冠军联赛',
+        'clubs': [
+            {
+                'name': '马德里竞技',
+                'finance': 20000
+            },
+            {
+                'name': '阿森纳',
+                'finance': 20000
+            },
+            {
+                'name': '托特纳姆热刺',
+                'finance': 20000
+            },
+            {
+                'name': '尤文图斯',
+                'finance': 20000
+            },
+            {
+                'name': '多特蒙德',
+                'finance': 20000
+            },
+            {
+                'name': '里昂',
+                'finance': 20000
+            },
+            {
+                'name': '上海申花',
+                'finance': 20000
+            },
+            {
+                'name': '上海上港',
+                'finance': 20000
+            }]
     }
+]
 
+# location_potential
+rating_potential = [
+    {'name': 'ST',
+     'offset': {'shooting': 0.6, 'anticipation': 0.2, 'strength': 0.2}},
+    {'name': 'LW',
+     'offset': {'dribbling': 0.4, 'pace': 0.4, 'passing': 0.1, 'shooting': 0.1}},
+    {'name': 'RW',
+     'offset': {'dribbling': 0.4, 'pace': 0.4, 'passing': 0.1, 'shooting': 0.1}},
+    {'name': 'CM',
+     'offset': {'passing': 0.6, 'stamina': 0.3, 'shooting': 0.1}},
+    {'name': 'CB',
+     'offset': {'interception': 0.5, 'anticipation': 0.2, 'strength': 0.2, 'passing': 0.1}},
+    {'name': 'LB',
+     'offset': {'interception': 0.3, 'shooting': 0.4, 'dribbling': 0.1, 'passing': 0.2}},
+    {'name': 'RB',
+     'offset': {'interception': 0.3, 'shooting': 0.4, 'dribbling': 0.1, 'passing': 0.2}},
+    {'name': 'GK',
+     'offset': {'goalkeeping': 1.5}},
+    {'name': 'CAM',
+     'offset': {'passing': 0.3, 'shooting': 0.3, 'anticipation': 0.2, 'strength': 0.2}},
+    {'name': 'LM',
+     'offset': {'passing': 0.5, 'shooting': 0.2, 'dribbling': 0.1, 'pace': 0.1, 'stamina': 0.1}},
+    {'name': 'RM',
+     'offset': {'passing': 0.5, 'shooting': 0.2, 'dribbling': 0.1, 'pace': 0.1, 'stamina': 0.1}},
+    {'name': 'CDM',
+     'offset': {'passing': 0.4, 'interception': 0.4, 'anticipation': 0.1, 'strength': 0.1}},
 ]
 
 
@@ -184,7 +259,7 @@ class Location(str, enum.Enum):
 LOG_FOLDER = "C:/Users/Tyeah/PycharmProjects/Petit-FM/logs"
 if not os.path.exists(LOG_FOLDER):
     os.mkdir(LOG_FOLDER)
-t = time.strftime("%m_%d_%H")
+t = time.strftime("%m_%d")
 
 logger = logger
 logger.remove(handler_id=None)  # 禁用控制台输出

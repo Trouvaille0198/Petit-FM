@@ -11,8 +11,9 @@ class Game(Base):
 
     created_time = Column(DateTime)
     date = Column(String)
+    season = Column(String)
     script = Column(String)
-    teams = relationship("GameTeamInfo", backref="game")
+    teams = relationship("GameTeamInfo", backref="game", lazy='subquery')
 
 
 class GameTeamInfo(Base):
@@ -24,8 +25,8 @@ class GameTeamInfo(Base):
     created_time = Column(DateTime)
     name = Column(String)  # TODO 临时
     score = Column(Integer)
-    team_data = relationship("GameTeamData", uselist=False, backref="game_team_info")
-    player_data = relationship("GamePlayerData", backref="game_team_info")
+    team_data = relationship("GameTeamData", uselist=False, backref="game_team_info", lazy='subquery')
+    player_data = relationship("GamePlayerData", backref="game_team_info", lazy='subquery')
 
 
 class GameTeamData(Base):
@@ -144,7 +145,7 @@ class Player(Base):
     stamina_limit = Column(Integer)
     goalkeeping_limit = Column(Integer)
     # 生涯数据
-    game_data = relationship('GamePlayerData', backref='player')
+    game_data = relationship('GamePlayerData', backref='player', lazy='subquery')
 
 
 # endregion
@@ -179,12 +180,25 @@ class Coach(Base):
 class Club(Base):
     __tablename__ = 'club'
     id = Column(Integer, primary_key=True, index=True)
+    league_id = Column(Integer, ForeignKey('league.id'))
 
     created_time = Column(DateTime)
     name = Column(String)
     finance = Column(Float)
 
-    coach = relationship("Coach", uselist=False, backref="club")
-    players = relationship("Player", backref="club")
+    coach = relationship("Coach", uselist=False, backref="club", lazy='subquery')
+    players = relationship("Player", backref="club", lazy='subquery')
 
+
+# endregion
+
+# region 联赛数据
+class League(Base):
+    __tablename__ = 'league'
+    id = Column(Integer, primary_key=True, index=True)
+
+    created_time = Column(DateTime)
+    name = Column(String)
+
+    clubs = relationship("Club", backref='league', lazy='subquery')
 # endregion
