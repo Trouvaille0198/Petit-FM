@@ -20,7 +20,7 @@ class GameTeamInfo(Base):
     __tablename__ = 'game_team_info'
     id = Column(Integer, primary_key=True, index=True)
     game_id = Column(Integer, ForeignKey('game.id'))  # 外键
-    # club_id = Column(Integer, Foreign('club.id')) # 与俱乐部类连接的外键
+    club_id = Column(Integer, ForeignKey('club.id'))  # 与俱乐部类连接的外键
 
     created_time = Column(DateTime)
     name = Column(String)  # TODO 临时

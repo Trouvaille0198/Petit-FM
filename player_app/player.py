@@ -7,10 +7,11 @@ from utils import utils
 
 
 class Player:
-    def __init__(self, init_type: int = 1, player_id: int = 0):
+    def __init__(self, init_type: int = 1, generator: PlayerGenerator = None, player_id: int = 0):
         self.id = player_id
         self.player_model = None
         self.data = dict()  # 初始化或待修改的数据
+        self.generator = generator  # 从外部导入生成器以加快运行速度
         if init_type == 1:
             # 随机生成
             self.generate()
@@ -22,51 +23,57 @@ class Player:
             logger.error('球员初始化错误！')
 
     def generate(self):
-        generator = PlayerGenerator()
         self.data['created_time'] = datetime.datetime.now()
-        self.data['name'] = generator.get_name()
-        self.data['translated_name'] = generator.translate(self.data['name'])
-        self.data['nationality'] = generator.get_nationality() \
-            if self.data['name'] != self.data['translated_name'] else 'China'
-        self.data['translated_nationality'] = generator.translate(self.data['nationality'])
-        self.data['height'] = generator.get_height()
-        self.data['weight'] = generator.get_weight()
-        self.data['birth_date'] = generator.get_birthday()
+        # self.data['name'] = generator.get_name()
+        nation, self.data['name'], self.data['translated_name'] = self.generator.get_name()
+        if nation == 'cn':
+            self.data['nationality'], self.data['translated_nationality'] = 'China', '中国'
+        elif nation == 'jp':
+            self.data['nationality'], self.data['translated_nationality'] = 'Japan', '日本'
+        else:
+            self.data['nationality'], self.data['translated_nationality'] = self.generator.get_nationality()
+        # self.data['translated_name'] = generator.translate(self.data['name'])
+        # self.data['nationality'] = generator.get_nationality() \
+        #     if self.data['name'] != self.data['translated_name'] else 'China'
+        # self.data['translated_nationality'] = generator.translate(self.data['nationality'])
+        self.data['height'] = self.generator.get_height()
+        self.data['weight'] = self.generator.get_weight()
+        self.data['birth_date'] = self.generator.get_birthday()
         # rating limit generation
-        self.data['shooting_limit'] = generator.get_rating_potential(self.data['translated_nationality'])
-        self.data['passing_limit'] = generator.get_rating_potential(self.data['translated_nationality'])
-        self.data['dribbling_limit'] = generator.get_rating_potential(self.data['translated_nationality'])
-        self.data['interception_limit'] = generator.get_rating_potential(self.data['translated_nationality'])
-        self.data['pace_limit'] = generator.get_rating_potential(self.data['translated_nationality'])
-        self.data['strength_limit'] = generator.get_rating_potential(self.data['translated_nationality'])
-        self.data['aggression_limit'] = generator.get_rating_potential(self.data['translated_nationality'])
-        self.data['anticipation_limit'] = generator.get_rating_potential(self.data['translated_nationality'])
-        self.data['free_kick_limit'] = generator.get_rating_potential(self.data['translated_nationality'])
-        self.data['stamina_limit'] = generator.get_rating_potential(self.data['translated_nationality'])
-        self.data['goalkeeping_limit'] = generator.get_rating_potential(self.data['translated_nationality'])
+        self.data['shooting_limit'] = self.generator.get_rating_potential(self.data['translated_nationality'])
+        self.data['passing_limit'] = self.generator.get_rating_potential(self.data['translated_nationality'])
+        self.data['dribbling_limit'] = self.generator.get_rating_potential(self.data['translated_nationality'])
+        self.data['interception_limit'] = self.generator.get_rating_potential(self.data['translated_nationality'])
+        self.data['pace_limit'] = self.generator.get_rating_potential(self.data['translated_nationality'])
+        self.data['strength_limit'] = self.generator.get_rating_potential(self.data['translated_nationality'])
+        self.data['aggression_limit'] = self.generator.get_rating_potential(self.data['translated_nationality'])
+        self.data['anticipation_limit'] = self.generator.get_rating_potential(self.data['translated_nationality'])
+        self.data['free_kick_limit'] = self.generator.get_rating_potential(self.data['translated_nationality'])
+        self.data['stamina_limit'] = self.generator.get_rating_potential(self.data['translated_nationality'])
+        self.data['goalkeeping_limit'] = self.generator.get_rating_potential(self.data['translated_nationality'])
         # rating generation
         self.data['shooting'] = self.adjust_rating(
-            generator.get_rating(self.data['translated_nationality']), self.data['shooting_limit'])
+            self.generator.get_rating(self.data['translated_nationality']), self.data['shooting_limit'])
         self.data['passing'] = self.adjust_rating(
-            generator.get_rating(self.data['translated_nationality']), self.data['passing_limit'])
+            self.generator.get_rating(self.data['translated_nationality']), self.data['passing_limit'])
         self.data['dribbling'] = self.adjust_rating(
-            generator.get_rating(self.data['translated_nationality']), self.data['dribbling_limit'])
+            self.generator.get_rating(self.data['translated_nationality']), self.data['dribbling_limit'])
         self.data['interception'] = self.adjust_rating(
-            generator.get_rating(self.data['translated_nationality']), self.data['interception_limit'])
+            self.generator.get_rating(self.data['translated_nationality']), self.data['interception_limit'])
         self.data['pace'] = self.adjust_rating(
-            generator.get_rating(self.data['translated_nationality']), self.data['pace_limit'])
+            self.generator.get_rating(self.data['translated_nationality']), self.data['pace_limit'])
         self.data['strength'] = self.adjust_rating(
-            generator.get_rating(self.data['translated_nationality']), self.data['strength_limit'])
+            self.generator.get_rating(self.data['translated_nationality']), self.data['strength_limit'])
         self.data['aggression'] = self.adjust_rating(
-            generator.get_rating(self.data['translated_nationality']), self.data['aggression_limit'])
+            self.generator.get_rating(self.data['translated_nationality']), self.data['aggression_limit'])
         self.data['anticipation'] = self.adjust_rating(
-            generator.get_rating(self.data['translated_nationality']), self.data['anticipation_limit'])
+            self.generator.get_rating(self.data['translated_nationality']), self.data['anticipation_limit'])
         self.data['free_kick'] = self.adjust_rating(
-            generator.get_rating(self.data['translated_nationality']), self.data['free_kick_limit'])
+            self.generator.get_rating(self.data['translated_nationality']), self.data['free_kick_limit'])
         self.data['stamina'] = self.adjust_rating(
-            generator.get_rating(self.data['translated_nationality']), self.data['stamina_limit'])
+            self.generator.get_rating(self.data['translated_nationality']), self.data['stamina_limit'])
         self.data['goalkeeping'] = self.adjust_rating(
-            generator.get_rating(self.data['translated_nationality']), self.data['goalkeeping_limit'])
+            self.generator.get_rating(self.data['translated_nationality']), self.data['goalkeeping_limit'])
         # 为球员选择先天位置，并增强相应能力
         original_location = random.choice(rating_potential)
         self.data[original_location['name'] + '_num'] = 1

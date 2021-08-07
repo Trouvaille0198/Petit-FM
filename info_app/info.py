@@ -13,6 +13,64 @@ class Info:
     def switch2df(data: List[dict]):
         return pd.DataFrame(data)
 
+    def get_points_table(self, year: str) -> pd.DataFrame:
+        """
+        获取赛季积分榜
+        :param year: 赛季年份
+        :return: df
+        """
+        query_str = 'models.Game.season=="{}"'.format(year)
+        games = crud.get_games_by_attri(query_str=query_str)
+        points_dict = dict()
+        for game in games:
+            team1 = game.teams[0]
+            team2 = game.teams[1]
+            if team1.name not in points_dict.keys():
+                points_dict[team1.name] = dict()
+                points_dict[team1.name]['id'] = team1.club_id
+                points_dict[team1.name]['名称'] = team1.name
+                points_dict[team1.name]['胜'] = 0
+                points_dict[team1.name]['平'] = 0
+                points_dict[team1.name]['负'] = 0
+                points_dict[team1.name]['胜球'] = 0
+                points_dict[team1.name]['输球'] = 0
+                points_dict[team1.name]['积分'] = 0
+
+            if team2.name not in points_dict.keys():
+                points_dict[team2.name] = dict()
+                points_dict[team2.name]['id'] = team2.club_id
+                points_dict[team2.name]['名称'] = team2.name
+                points_dict[team2.name]['胜'] = 0
+                points_dict[team2.name]['平'] = 0
+                points_dict[team2.name]['负'] = 0
+                points_dict[team2.name]['胜球'] = 0
+                points_dict[team2.name]['输球'] = 0
+                points_dict[team2.name]['积分'] = 0
+
+            points_dict[team1.name]['胜球'] += team1.score
+            points_dict[team1.name]['输球'] += team2.score
+            points_dict[team2.name]['胜球'] += team2.score
+            points_dict[team2.name]['输球'] += team1.score
+
+            if team1.score > team2.score:
+                points_dict[team1.name]['胜'] += 1
+                points_dict[team2.name]['负'] += 1
+                points_dict[team1.name]['积分'] += 3
+            elif team1.score < team2.score:
+                points_dict[team2.name]['胜'] += 1
+                points_dict[team1.name]['负'] += 1
+                points_dict[team2.name]['积分'] += 3
+            else:
+                points_dict[team1.name]['平'] += 1
+                points_dict[team2.name]['平'] += 1
+                points_dict[team1.name]['积分'] += 1
+                points_dict[team2.name]['积分'] += 1
+        points_list = [team for team in points_dict.values()]
+        df = self.switch2df(points_list)
+        s = df.apply(lambda row: row['胜球'] - row['输球'], axis=1)
+        df.insert(7, '净胜球', s)
+        return df
+
     def get_season_player_chart(self, year: str) -> pd.DataFrame:
         """
         获取赛季球员数据
@@ -27,7 +85,8 @@ class Info:
         for player_data in player_data_list:
             one_piece = {
                 'id': player_data.player_id,
-                '名字': player_data.name,
+                '姓名': player_data.name,
+                '俱乐部': player_data.game_team_info.name,
                 '进球数': player_data.goals,
                 '助攻数': player_data.assists,
                 '传球数': player_data.passes,
@@ -43,7 +102,7 @@ class Info:
             }
             filtered_list.append(one_piece)
         df = self.switch2df(filtered_list)
-        df = df.groupby(by=['id', '名字']).agg(
+        df = df.groupby(by=['id', '姓名', '俱乐部']).agg(
             {
                 '进球数': 'sum', '助攻数': 'sum',
                 '传球数': 'sum', '传球成功数': 'sum',
@@ -77,8 +136,20 @@ class Info:
         # df.to_csv(path + '/' + filename)
         df.to_sql(filename, database.engine)
 
+    @staticmethod
+    def save(df, filename: str, file_format: str = 'json', path: str = config.CWD_URL):
+        if file_format == 'json':
+            df.to_json(path + '/' + filename)
+        elif file_format == 'csv':
+            df.to_csv(path + '/' + filename)
+
 
 if __name__ == '__main__':
     info = Info()
-    print(info.get_season_player_chart('2021'))
-    info.save_in_db(info.get_season_player_chart('2021'), 'season_2021_chart')
+    # print(info.get_season_player_chart('2022'))
+    # print(info.get_points_table('2022'))
+    start_year = '2022'
+    info.save_in_db(info.get_season_player_chart(str(start_year)),
+                    '{}赛季球员数据榜'.format(str(start_year)))
+    info.save_in_db(info.get_points_table(str(start_year)),
+                    '{}赛季积分榜'.format(str(start_year)))

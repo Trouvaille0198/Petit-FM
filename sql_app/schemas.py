@@ -64,6 +64,7 @@ class GameTeamData(BaseModel):
 class GameTeamInfo(BaseModel):
     # id: int
     # game_id: int
+    club_id: int
 
     created_time: datetime
     name: str  # TODO 临时

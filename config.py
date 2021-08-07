@@ -6,9 +6,19 @@ from loguru import logger
 
 CWD_URL = 'C:/Users/Tyeah/PycharmProjects/Petit-FM'
 
-current_path = str(Path.cwd())
+
+def init_current_path():
+    """
+    确定根目录，在整个游戏开始前调用
+    """
+    global CWD_URL
+    CWD_URL = str(Path.cwd())
+    logger.info("根目录为：{}".format(CWD_URL))
+
+
+# current_path = str(Path.cwd())
 # print(current_path)
-current_path = current_path.replace('\\', '/')
+# current_path = current_path.replace('\\', '/')
 # SQLALCHEMY_DATABASE_URL = "sqlite:///" + current_path + "/db_file/sql_app.db"
 SQLALCHEMY_DATABASE_URL = "sqlite:///" + CWD_URL + "/db_file/sql_app.db"  # TODO 路径会变
 
@@ -167,12 +177,7 @@ leagues = [
             {
                 'name': '利物浦',
                 'finance': 20000
-            }
-        ]
-    },
-    {
-        'name': '世界冠军联赛',
-        'clubs': [
+            },
             {
                 'name': '马德里竞技',
                 'finance': 20000
@@ -194,7 +199,7 @@ leagues = [
                 'finance': 20000
             },
             {
-                'name': '里昂',
+                'name': '拜仁慕尼黑',
                 'finance': 20000
             },
             {
@@ -204,7 +209,85 @@ leagues = [
             {
                 'name': '上海上港',
                 'finance': 20000
-            }]
+            },
+            {
+                'name': '莱斯特城',
+                'finance': 20000
+            },
+            {
+                'name': '塞维利亚',
+                'finance': 20000
+            }
+        ]
+    },
+    {
+        'name': '世界冠军联赛',
+        'clubs': [
+            {
+                'name': '里昂',
+                'finance': 20000
+            },
+            {
+                'name': '里斯本竞技',
+                'finance': 20000
+            },
+            {
+                'name': '莱比锡',
+                'finance': 20000
+            },
+            {
+                'name': '浙江绿城',
+                'finance': 20000
+            },
+            {
+                'name': '勒沃库森',
+                'finance': 20000
+            },
+            {
+                'name': '西汉姆联',
+                'finance': 20000
+            },
+            {
+                'name': '狼队',
+                'finance': 20000
+            },
+            {
+                'name': '罗马',
+                'finance': 20000
+            },
+            {
+                'name': '摩纳哥',
+                'finance': 20000
+            },
+            {
+                'name': '广州恒大',
+                'finance': 20000
+            },
+            {
+                'name': '马赛',
+                'finance': 20000
+            },
+            {
+                'name': '波尔图',
+                'finance': 20000
+            },
+            {
+                'name': '本菲卡',
+                'finance': 20000
+            },
+            {
+                'name': '博卡',
+                'finance': 20000
+            },
+            {
+                'name': '河床',
+                'finance': 20000
+            },
+            {
+                'name': '川崎前锋',
+                'finance': 20000
+            }
+        ]
     }
 ]
 
@@ -262,6 +345,6 @@ if not os.path.exists(LOG_FOLDER):
 t = time.strftime("%m_%d")
 
 logger = logger
-logger.remove(handler_id=None)  # 禁用控制台输出
+# logger.remove(handler_id=None)  # 禁用控制台输出
 logger.add("{}\\log_{}.log".format(LOG_FOLDER, t), format="{message}",
            rotation="1 day", encoding="utf-8", retention="300 days")

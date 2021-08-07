@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from sql_app import models, schemas, database
 from sql_app.database import db_openish
+import config
 
 
 # region 比赛操作
@@ -23,6 +24,7 @@ def create_game(game: schemas.Game, db: Session):
 def create_game_team_info(game_id: int, game_team_info: schemas.GameTeamInfo, db: Session):
     db_game_team_info = models.GameTeamInfo(
         game_id=game_id,
+        club_id=game_team_info.club_id,
         created_time=game_team_info.created_time,
         name=game_team_info.name,
         score=game_team_info.score)
@@ -68,13 +70,28 @@ def get_games_by_attri(query_str: str, db: Session, only_one: bool = False):
         return db_games
 
 
-# endregion
 @db_openish
-def test(db: Session):
-    player = db.query(models.GamePlayerData).filter(models.GamePlayerData.name == '梅西',
-                                                    models.GamePlayerData.game_team_info.has(
-                                                        models.GameTeamInfo.name == '巴塞罗那')).first()
-    print(player.dict())
+def delete_game_by_attri(query_str: str, db: Session):
+    db_games = db.query(models.Game).filter(eval(query_str)).all()
+    if not db_games:
+        config.logger.info('无比赛表可删！')
+    for db_game in db_games:
+        db_game_teams_info = db.query(models.GameTeamInfo).filter(
+            models.GameTeamInfo.game_id == db_game.id).all()
+        for db_game_team_info in db_game_teams_info:
+            db_game_team_data = db.query(models.GameTeamData).filter(
+                models.GameTeamData.game_team_info_id == db_game_team_info.id).first()
+            db.delete(db_game_team_data)
+            db_game_players_data = db.query(models.GamePlayerData).filter(
+                models.GamePlayerData.game_team_info_id == db_game_team_info.id).all()
+            for db_game_player_data in db_game_players_data:
+                db.delete(db_game_player_data)
+            db.delete(db_game_team_info)
+        db.delete(db_game)
+        db.commit()
+
+
+# endregion
 
 
 # region 球员操作

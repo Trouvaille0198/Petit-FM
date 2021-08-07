@@ -237,6 +237,7 @@ class Team:
             player_data.append(player.export_game_player_data(created_time))
         data = {
             'created_time': created_time,
+            'club_id': self.team_model.id,
             'name': self.name,
             'score': self.score,
             'team_data': game_team_data,
@@ -750,7 +751,6 @@ class Game:
             'teams': teams
         }
         game_data = schemas.Game(**data)
-        logger.debug(game_data)
         return game_data
 
     def save_in_db(self):

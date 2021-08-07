@@ -8,10 +8,11 @@ import random
 
 
 class Coach:
-    def __init__(self, init_type: int = 1, coach_id: int = 0):
+    def __init__(self, init_type: int = 1, generator: PlayerGenerator = None, coach_id: int = 0):
         self.id = coach_id
         self.coach_model = None
         self.data = dict()
+        self.generator = generator  # 从外部导入生成器以加快运行速度
         if init_type == 1:
             # 随机生成
             self.generate()
@@ -23,14 +24,22 @@ class Coach:
             config.logger.error('球员初始化错误！')
 
     def generate(self):
-        generator = PlayerGenerator()  # 球员的生成器，暂且给教练用用
         self.data['created_time'] = datetime.datetime.now()
-        self.data['name'] = generator.get_name()
-        self.data['translated_name'] = generator.translate(self.data['name'])
-        self.data['nationality'] = generator.get_nationality() \
-            if self.data['name'] != self.data['translated_name'] else 'China'
-        self.data['translated_nationality'] = generator.translate(self.data['nationality'])
-        self.data['birth_date'] = generator.get_birthday()
+
+        # self.data['name'] = generator.get_name()
+        # self.data['translated_name'] = generator.translate(self.data['name'])
+        # self.data['nationality'] = generator.get_nationality() \
+        #     if self.data['name'] != self.data['translated_name'] else 'China'
+        # self.data['translated_nationality'] = generator.translate(self.data['nationality'])
+        nation, self.data['name'], self.data['translated_name'] = self.generator.get_name()
+        if nation == 'cn':
+            self.data['nationality'], self.data['translated_nationality'] = 'China', '中国'
+        elif nation == 'jp':
+            self.data['nationality'], self.data['translated_nationality'] = 'Japan', '日本'
+        else:
+            self.data['nationality'], self.data['translated_nationality'] = self.generator.get_nationality()
+
+        self.data['birth_date'] = self.generator.get_birthday()
         # tactic
         self.data['tactic'] = random.choice([x for x in config.tactic_config.keys()])
         self.data['wing_cross'] = utils.get_mean_range(50, per_range=0.9)

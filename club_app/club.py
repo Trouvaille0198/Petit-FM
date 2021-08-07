@@ -4,6 +4,7 @@ from typing import List
 from sql_app import schemas, crud, models
 from coach_app import Coach
 from player_app import Player
+from player_app import PlayerGenerator
 
 
 class Club:
@@ -27,10 +28,11 @@ class Club:
         self.data['finance'] = club_data['finance']
         self.save_in_db(init=True)
         # 随机初始化教练和球员
-        coach = Coach(init_type=1)
+        generator = PlayerGenerator()
+        coach = Coach(generator=generator,init_type=1)
         coach.switch_club(self.id)
         for _ in range(11):
-            player = Player(init_type=1)
+            player = Player(generator=generator, init_type=1)
             player.switch_club(self.id)
 
     def import_data(self):
