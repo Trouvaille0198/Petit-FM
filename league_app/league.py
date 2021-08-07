@@ -98,10 +98,10 @@ class League:
         for _ in range(years):
             self.start_season(Date(start_year, 2, random.randint(1, 28)))
             info.save(info.get_season_player_chart(
-                str(start_year)), filename='{}{}赛季球员数据榜.csv'.format(
+                str(start_year)), filename='output_data/{}{}赛季球员数据榜.csv'.format(
                 self.league_model.name, str(start_year)), file_format='csv')
             info.save(info.get_points_table(
-                str(start_year)), filename='{}{}赛季积分榜.csv'.format(
+                str(start_year)), filename='output_data/{}{}赛季积分榜.csv'.format(
                 self.league_model.name, str(start_year)), file_format='csv')
             if save_in_db:
                 info.save_in_db(info.get_season_player_chart(str(start_year)),

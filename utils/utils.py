@@ -14,7 +14,7 @@ def get_mean_range(*value, per_range: float = 0.1) -> float:
 
 
 def get_offset(value, offset) -> float:
-    return value * (1 + offset)
+    return float(retain_decimal(value * (1 + offset)))
 
 
 def normalvariate(mu, sigma=2):

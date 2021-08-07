@@ -14,6 +14,7 @@ class GamePlayerData(BaseModel):
     name: str  # TODO 临时
     location: Location
 
+    final_rating: float
     actions: int
     shots: int
     goals: int
@@ -81,6 +82,7 @@ class Game(BaseModel):
     date: str
     season: str
     script: str
+    mvp: int
 
     teams: List[GameTeamInfo]
 
@@ -117,17 +119,17 @@ class Player(BaseModel):
     RM_num: int = 0
     CDM_num: int = 0
     # rating
-    shooting: int  # 射门
-    passing: int  # 传球
-    dribbling: int  # 盘带
-    interception: int  # 抢断
-    pace: int  # 速度
-    strength: int  # 力量
-    aggression: int  # 侵略
-    anticipation: int  # 预判
-    free_kick: int  # 任意球/点球
-    stamina: int  # 体能
-    goalkeeping: int  # 守门
+    shooting: float  # 射门
+    passing: float  # 传球
+    dribbling: float  # 盘带
+    interception: float  # 抢断
+    pace: float  # 速度
+    strength: float  # 力量
+    aggression: float  # 侵略
+    anticipation: float  # 预判
+    free_kick: float  # 任意球/点球
+    stamina: float  # 体能
+    goalkeeping: float  # 守门
     # rating limit
     shooting_limit: int
     passing_limit: int

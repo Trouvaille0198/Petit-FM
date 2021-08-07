@@ -122,6 +122,9 @@ class Player:
         rating = rating if rating <= rating_limit else rating_limit
         return rating
 
+    def get_location_rating(self):
+        pass
+
 
 if __name__ == "__main__":
     for _ in range(200):

@@ -26,27 +26,6 @@ DEFAULT_RATING = {
     "goalkeeping": 50  # 守门
 }
 
-DEFAULT_TACTIC = {
-    "name": "4-4-2",
-    "location": {
-        "ST": 2,
-        "CM": 2,
-        "LW": 1,
-        "RW": 1,
-        "CB": 2,
-        "LB": 1,
-        "RB": 1,
-        "GK": 1
-    },
-    "probability": {
-        "wing_cross": 40,
-        "under_cutting": 40,
-        "pull_back": 40,
-        "middle_attack": 40,
-        "counter_attack": 40
-    }
-}
-
 
 class Player:
     def __init__(self, player_model: models.Player, location: str, stamina: int = 100):
@@ -72,7 +51,8 @@ class Player:
             "aerials": 0,
             "aerial_success": 0,
             "saves": 0,
-            "save_success": 0
+            "save_success": 0,
+            'final_rating': 6.0
         }
 
     def init_rating(self):
@@ -163,7 +143,7 @@ class Player:
         elif self.location == Location.CM:
             # 中场有概率前压或后撤
             self.real_location = select_by_pro(
-                {Location.ST: 20, Location.CB: 15, Location.CM: 75}
+                {Location.ST: 10, Location.CB: 10, Location.CM: 80}
             )
         elif self.location == Location.LB:
             self.real_location = select_by_pro(
@@ -735,9 +715,50 @@ class Game:
                 counter_attack_permitted = False
         self.add_script('比赛结束！ {} {}:{} {}'.format(
             self.lteam.name, self.lteam.score, self.rteam.score, self.rteam.name))
+        self.rate()  # 球员评分
         # self.show_data()
+
         self.save_in_db()
+        self.save_players_data()
         return self.lteam.score, self.rteam.score
+
+    def save_players_data(self):
+        for player in self.lteam.players:
+            self.save_player_data(player)
+        for player in self.rteam.players:
+            self.save_player_data(player)
+
+    @staticmethod
+    def save_player_data(player: Player):
+        player_id = player.player_model.id
+        lo = player.location
+        # 记录场上位置数
+        if lo == 'ST':
+            crud.update_player(player_id, {'ST_num': player.player_model.ST_num + 1})
+        elif lo == 'CM':
+            crud.update_player(player_id, {'CM_num': player.player_model.CM_num + 1})
+        elif lo == 'LW':
+            crud.update_player(player_id, {'LW_num': player.player_model.LW_num + 1})
+        elif lo == 'RW':
+            crud.update_player(player_id, {'RW_num': player.player_model.RW_num + 1})
+        elif lo == 'CB':
+            crud.update_player(player_id, {'CB_num': player.player_model.CB_num + 1})
+        elif lo == 'LB':
+            crud.update_player(player_id, {'LB_num': player.player_model.LB_num + 1})
+        elif lo == 'RB':
+            crud.update_player(player_id, {'RB_num': player.player_model.RB_num + 1})
+        elif lo == 'GK':
+            crud.update_player(player_id, {'GK_num': player.player_model.GK_num + 1})
+        elif lo == 'CAM':
+            crud.update_player(player_id, {'CAM_num': player.player_model.CAM_num + 1})
+        elif lo == 'LM':
+            crud.update_player(player_id, {'LM_num': player.player_model.LM_num + 1})
+        elif lo == 'RM':
+            crud.update_player(player_id, {'RM_num': player.player_model.RM_num + 1})
+        elif lo == 'CDM':
+            crud.update_player(player_id, {'CDM_num': player.player_model.CDM_num + 1})
+        else:
+            logger.warning('没有球员对应的位置！')
 
     def export_game(self) -> schemas.Game:
         created_time = datetime.datetime.now()
@@ -748,7 +769,8 @@ class Game:
             'date': self.date,
             'season': self.date[:4],
             'script': self.script,
-            'teams': teams
+            'teams': teams,
+            'mvp': self.get_highest_rating_player().player_model.id
         }
         game_data = schemas.Game(**data)
         return game_data
@@ -878,119 +900,188 @@ class Game:
         }
         return self.lteam.data, self.rteam.data, lanal, ranal
 
+    def rate(self):
+        """
+        球员评分
+        """
+        # 动作次数评分
+        average_actions = self.get_average_actions()
+        for player in self.lteam.players:
+            if player.location != Location.GK:
+                offset = self.get_offset_per(player.data['actions'], average_actions)
+                self.rate_by_actions(player, offset)
+        for player in self.rteam.players:
+            if player.location != Location.GK:
+                offset = self.get_offset_per(player.data['actions'], average_actions)
+                self.rate_by_actions(player, offset)
+        # 各项动作准确率评分
+        average_pass_success = \
+            self.get_average_capa('pass_success', action_name='passes') / \
+            self.get_average_capa('passes', is_action=True)
+        average_dribble_success = \
+            self.get_average_capa('dribble_success', action_name='dribbles') / \
+            self.get_average_capa('dribbles', is_action=True)
+        average_tackle_success = \
+            self.get_average_capa('tackle_success', action_name='tackles') / \
+            self.get_average_capa('tackles', is_action=True)
+        average_aerial_success = \
+            self.get_average_capa('aerial_success', action_name='aerials') / \
+            self.get_average_capa('aerials', is_action=True)
+        for player in self.lteam.players:
+            if player.location != Location.GK:
+                if player.data['passes'] >= 5:
+                    offset = self.get_offset_per(player.data['pass_success'] / player.data['passes'],
+                                                 average_pass_success)
+                    self.rate_by_capa(player, offset)
+                if player.data['dribbles'] >= 5:
+                    offset = self.get_offset_per(player.data['dribble_success'] / player.data['dribbles'],
+                                                 average_dribble_success)
+                    self.rate_by_capa(player, offset)
+                if player.data['tackles'] >= 5:
+                    offset = self.get_offset_per(player.data['tackle_success'] / player.data['tackles'],
+                                                 average_tackle_success)
+                    self.rate_by_capa(player, offset)
+                if player.data['aerials'] >= 5:
+                    offset = self.get_offset_per(player.data['aerial_success'] / player.data['aerials'],
+                                                 average_aerial_success)
+                    self.rate_by_capa(player, offset)
+        for player in self.rteam.players:
+            if player.location != Location.GK:
+                if player.data['passes'] >= 5:
+                    offset = self.get_offset_per(player.data['pass_success'] / player.data['passes'],
+                                                 average_pass_success)
+                    self.rate_by_capa(player, offset)
+                if player.data['dribbles'] >= 5:
+                    offset = self.get_offset_per(player.data['dribble_success'] / player.data['dribbles'],
+                                                 average_dribble_success)
+                    self.rate_by_capa(player, offset)
+                if player.data['tackles'] >= 5:
+                    offset = self.get_offset_per(player.data['tackle_success'] / player.data['tackles'],
+                                                 average_tackle_success)
+                    self.rate_by_capa(player, offset)
+                if player.data['aerials'] >= 5:
+                    offset = self.get_offset_per(player.data['aerial_success'] / player.data['aerials'],
+                                                 average_aerial_success)
+                    self.rate_by_capa(player, offset)
+        # 其他加成
+        for player in self.lteam.players:
+            goals = player.data['goals']
+            assists = player.data['assists']
+            saves = player.data['save_success']
+            player.data['final_rating'] += goals * 1.5 + assists * 1.1 + saves * 0.4
+        for player in self.rteam.players:
+            goals = player.data['goals']
+            assists = player.data['assists']
+            saves = player.data['save_success']
+            player.data['final_rating'] += goals * 1.5 + assists * 1.1 + saves * 0.4
+        for player in self.lteam.players:
+            self.perf_rating(player.data['final_rating'], player)
+        for player in self.rteam.players:
+            self.perf_rating(player.data['final_rating'], player)
 
-def simulate_games(team1: dict, team2: dict, num: int = 1000):
-    """
-    模拟比赛
-    :param team1: 队1
-    :param team2: 队2
-    :param num: 比赛场数
-    """
-    l_win = 0
-    r_win = 0
-    draw = 0
+    def get_average_actions(self) -> float:
+        _sum = 0
+        for player in self.lteam.players:
+            _sum += player.data['actions']
+        return _sum / 11
 
-    ldata_sum = {}
-    rdata_sum = {}
-    for _ in range(num):
-        game = Game(team1, team2)
-        # game.lteam.set_capa('stamina', 100)
-        l, r = game.start()
-        # ldata, rdata, lanal, ranal = game.get_data()
-        # ldata_sum = plus_dict(ldata_sum, ldata)
-        # rdata_sum = plus_dict(rdata_sum, rdata)
-        if l > r:
-            l_win += 1
-        elif l < r:
-            r_win += 1
+    def get_average_capa(self, capa_name: str, is_action=False, action_name: str = None):
+        _sum = 0
+        count = 0
+        for player in self.lteam.players:
+            if is_action:
+                if player.data[capa_name] < 5:
+                    continue
+            else:
+                if player.data[action_name] < 5:
+                    continue
+            _sum += player.data[capa_name]
+            count += 1  # 说明有一个球员被选中参与评分
+        for player in self.rteam.players:
+            if is_action:
+                if player.data[capa_name] < 5:
+                    continue
+            else:
+                if player.data[action_name] < 5:
+                    continue
+            _sum += player.data[capa_name]
+            count += 1
+        if is_action and _sum == 0:
+            # 防止分母为零
+            _sum = 1
+        if count == 0:
+            return 1
         else:
-            draw += 1
+            return _sum / count
 
-    # lanal = {
-    #     '下底传中成功率': ldata_sum['wing_cross_success'] / ldata_sum['wing_cross'] * 100 if ldata_sum[
-    #         'wing_cross'] else 0,
-    #     '边路内切成功率': ldata_sum['under_cutting_success'] / ldata_sum['under_cutting'] * 100 if
-    #     ldata_sum[
-    #         'under_cutting'] else 0,
-    #     '倒三角成功率': ldata_sum['pull_back_success'] / ldata_sum['pull_back'] * 100 if ldata_sum[
-    #         'pull_back'] else 0,
-    #     '中路渗透成功率': ldata_sum['middle_attack_success'] / ldata_sum['middle_attack'] * 100 if
-    #     ldata_sum[
-    #         'middle_attack'] else 0,
-    #     '防守反击成功率': ldata_sum['counter_attack_success'] / ldata_sum['counter_attack'] * 100 if
-    #     ldata_sum[
-    #         'counter_attack'] else 0
-    # }
-    # ranal = {
-    #     '下底传中成功率': rdata_sum['wing_cross_success'] / rdata_sum['wing_cross'] * 100 if rdata_sum[
-    #         'wing_cross'] else 0,
-    #     '边路内切成功率': rdata_sum['under_cutting_success'] / rdata_sum['under_cutting'] * 100 if
-    #     rdata_sum[
-    #         'under_cutting'] else 0,
-    #     '倒三角成功率': rdata_sum['pull_back_success'] / rdata_sum['pull_back'] * 100 if rdata_sum[
-    #         'pull_back'] else 0,
-    #     '中路渗透成功率': rdata_sum['middle_attack_success'] / rdata_sum['middle_attack'] * 100 if
-    #     rdata_sum[
-    #         'middle_attack'] else 0,
-    #     '防守反击成功率': rdata_sum['counter_attack_success'] / rdata_sum['counter_attack'] * 100 if
-    #     rdata_sum[
-    #         'counter_attack'] else 0
-    # }
-    logger.info('{} vs {}---左胜{}，右胜：{}，平局：{}'.format(team1["name"], team2["name"], l_win, r_win, draw))
-    # print('{} vs {}---左胜{}，右胜：{}，平局：{}'.format(team1["name"], team2["name"], l_win, r_win, draw))
-    # print('{}: {}'.format(team1["name"], ldata_sum))
-    # print(lanal)
-    # print('{}: {}'.format(team2["name"], rdata_sum))
-    # print(ranal)
-    # print('\n')
+    @staticmethod
+    def get_offset_per(a, b) -> float:
+        """
+        获取a比b高或低的比例
+        """
+        if b == 0:
+            return 0
+        else:
+            return (a - b) / b
 
+    @staticmethod
+    def rate_by_actions(player, offset):
+        if 0.1 <= offset < 0.2:
+            player.data['final_rating'] += 0.3
+        if 0.2 <= offset < 0.4:
+            player.data['final_rating'] += 0.7
+        if 0.4 <= offset < 0.6:
+            player.data['final_rating'] += 1.0
+        if 0.6 <= offset < 0.8:
+            player.data['final_rating'] += 1.5
+        if 0.8 <= offset:
+            player.data['final_rating'] += 2
+        if -0.2 < offset <= -0.1:
+            player.data['final_rating'] -= 0.3
+        if -0.4 < offset <= -0.2:
+            player.data['final_rating'] -= 0.7
+        if -0.6 < offset <= -0.4:
+            player.data['final_rating'] -= 1.0
+        if -0.8 < offset <= -0.6:
+            player.data['final_rating'] -= 1.5
+        if offset <= -0.8:
+            player.data['final_rating'] -= 2
 
-def tactics_test(team_info):
-    t4141 = team_info['4-1-4-1']
-    t433 = team_info['4-3-3']
-    t442 = team_info['4-4-2']
-    t352 = team_info['3-5-2']
-    t4312 = team_info['4-3-1-2']
-    print('4141')
-    simulate_games(t4141, t433, 500)
-    simulate_games(t4141, t442, 500)
-    simulate_games(t4141, t352, 500)
-    simulate_games(t4141, t4312, 500)
-    print('433')
-    simulate_games(t433, t4141, 500)
-    simulate_games(t433, t442, 500)
-    simulate_games(t433, t352, 500)
-    simulate_games(t433, t4312, 500)
-    print('442')
-    simulate_games(t442, t4141, 500)
-    simulate_games(t442, t433, 500)
-    simulate_games(t442, t352, 500)
-    simulate_games(t442, t4312, 500)
-    print('352')
-    simulate_games(t352, t4141, 500)
-    simulate_games(t352, t433, 500)
-    simulate_games(t352, t442, 500)
-    simulate_games(t352, t4312, 500)
-    print('4312')
-    simulate_games(t4312, t4141, 500)
-    simulate_games(t4312, t433, 500)
-    simulate_games(t4312, t442, 500)
-    simulate_games(t4312, t352, 500)
+    @staticmethod
+    def rate_by_capa(player, offset):
+        if 0.1 <= offset < 0.2:
+            player.data['final_rating'] += 0.3
+        if 0.2 <= offset < 0.4:
+            player.data['final_rating'] += 0.6
+        if 0.4 <= offset < 0.6:
+            player.data['final_rating'] += 0.9
+        if 0.6 <= offset < 0.8:
+            player.data['final_rating'] += 1.2
+        if 0.8 <= offset:
+            player.data['final_rating'] += 1.5
+        if -0.2 < offset <= -0.1:
+            player.data['final_rating'] -= 0.3
+        if -0.4 < offset <= -0.2:
+            player.data['final_rating'] -= 0.6
+        if -0.6 < offset <= -0.4:
+            player.data['final_rating'] -= 1.0
+        if -0.8 < offset <= -0.6:
+            player.data['final_rating'] -= 1.3
+        if -1 < offset <= -0.8:
+            player.data['final_rating'] -= 1.6
 
+    @staticmethod
+    def perf_rating(rating, player):
+        rating = player.data['final_rating']
+        if rating < 0:
+            rating = 0
+        if rating > 10:
+            rating = 10
+        player.data['final_rating'] = float(retain_decimal(rating))
 
-if __name__ == '__main__':
-    path = os.getcwd()
-    file_name = path + r'/test.json'
-    with open(file_name) as file_obj:
-        team = json.load(file_obj)
-
-    bar = team['巴塞罗那']
-    manu = team['曼联']
-    paris = team['巴黎圣日耳曼']
-    start_time = time.time()
-    simulate_games(bar, manu, 10)
-    simulate_games(bar, paris, 10)
-    simulate_games(manu, paris, 10)
-    end_time = time.time()
-    print('用时{}秒'.format(end_time - start_time))
-    # tactics_test(team)
+    def get_highest_rating_player(self):
+        player_list = [p for p in self.lteam.players]
+        player_list.extend([p for p in self.rteam.players])
+        player_list = [(p, p.data['final_rating']) for p in player_list]
+        highest_rating_player = max(player_list, key=lambda x: x[1])[0]
+        return highest_rating_player

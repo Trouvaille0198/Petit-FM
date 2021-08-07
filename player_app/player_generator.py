@@ -132,7 +132,7 @@ class PlayerGenerator:
         if local_nationality in country_potential.keys():
             return int(utils.normalvariate(mean_rating + country_potential[local_nationality], 6))
         else:
-            return int(utils.normalvariate(mean_rating, 6))
+            return float(utils.retain_decimal(int(utils.normalvariate(mean_rating, 6))))
 
 
 if __name__ == '__main__':

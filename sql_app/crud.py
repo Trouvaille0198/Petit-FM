@@ -7,7 +7,8 @@ import config
 # region 比赛操作
 @db_openish
 def create_game(game: schemas.Game, db: Session):
-    db_game = models.Game(created_time=game.created_time, date=game.date, script=game.script, season=game.season)
+    db_game = models.Game(created_time=game.created_time, date=game.date, script=game.script, season=game.season,
+                          mvp=game.mvp)
     # 提交数据库，生成id
     db.add(db_game)
     db.commit()

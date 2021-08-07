@@ -140,67 +140,67 @@ leagues = [
         'clubs': [
             {
                 'name': '巴塞罗那',
-                'finance': 20000
+                'finance': 50000
             },
             {
                 'name': '皇家马德里',
-                'finance': 20000
+                'finance': 43000
             },
             {
                 'name': '曼彻斯特联',
-                'finance': 20000
+                'finance': 45000
             },
             {
                 'name': '曼彻斯特城',
-                'finance': 20000
+                'finance': 45000
             },
             {
                 'name': 'AC米兰',
-                'finance': 20000
+                'finance': 38000
             },
             {
                 'name': '国际米兰',
-                'finance': 20000
+                'finance': 38000
             },
             {
                 'name': '巴黎圣日尔曼',
-                'finance': 20000
+                'finance': 42000
             },
             {
                 'name': '阿贾克斯',
-                'finance': 20000
+                'finance': 34000
             },
             {
                 'name': '切尔西',
-                'finance': 20000
+                'finance': 41000
             },
             {
                 'name': '利物浦',
-                'finance': 20000
+                'finance': 38000
             },
             {
                 'name': '马德里竞技',
-                'finance': 20000
+                'finance': 32000
             },
             {
                 'name': '阿森纳',
-                'finance': 20000
+                'finance': 30000
             },
             {
                 'name': '托特纳姆热刺',
-                'finance': 20000
+                'finance': 28000
             },
             {
                 'name': '尤文图斯',
-                'finance': 20000
+                'finance': 32000
             },
             {
                 'name': '多特蒙德',
-                'finance': 20000
+                'finance': 31000
             },
             {
                 'name': '拜仁慕尼黑',
-                'finance': 20000
+                'finance': 37000
             },
             {
                 'name': '上海申花',
@@ -212,11 +212,11 @@ leagues = [
             },
             {
                 'name': '莱斯特城',
-                'finance': 20000
+                'finance': 16000
             },
             {
                 'name': '塞维利亚',
-                'finance': 20000
+                'finance': 16000
             }
         ]
     },
@@ -225,67 +225,67 @@ leagues = [
         'clubs': [
             {
                 'name': '里昂',
-                'finance': 20000
+                'finance': 14000
             },
             {
                 'name': '里斯本竞技',
-                'finance': 20000
+                'finance': 14000
             },
             {
                 'name': '莱比锡',
-                'finance': 20000
+                'finance': 16000
             },
             {
                 'name': '浙江绿城',
-                'finance': 20000
+                'finance': 25000
             },
             {
                 'name': '勒沃库森',
-                'finance': 20000
+                'finance': 15000
             },
             {
                 'name': '西汉姆联',
-                'finance': 20000
+                'finance': 18000
             },
             {
                 'name': '狼队',
-                'finance': 20000
+                'finance': 13000
             },
             {
                 'name': '罗马',
-                'finance': 20000
+                'finance': 13000
             },
             {
                 'name': '摩纳哥',
-                'finance': 20000
+                'finance': 14000
             },
             {
                 'name': '广州恒大',
-                'finance': 20000
+                'finance': 21000
             },
             {
                 'name': '马赛',
-                'finance': 20000
+                'finance': 15000
             },
             {
                 'name': '波尔图',
-                'finance': 20000
+                'finance': 14000
             },
             {
                 'name': '本菲卡',
-                'finance': 20000
+                'finance': 15000
             },
             {
                 'name': '博卡',
-                'finance': 20000
+                'finance': 19000
             },
             {
                 'name': '河床',
-                'finance': 20000
+                'finance': 19000
             },
             {
                 'name': '川崎前锋',
-                'finance': 20000
+                'finance': 14000
             }
         ]
     }
@@ -319,8 +319,50 @@ rating_potential = [
      'offset': {'passing': 0.4, 'interception': 0.4, 'anticipation': 0.1, 'strength': 0.1}},
 ]
 
+# select_player
+select_location = [
+    {'name': 'ST',
+     'weight': {'shooting': 0.5, 'passing': 0, 'dribbling': 0.05, 'interception': 0, 'pace': 0.05, 'strength': 0.15,
+                'aggression': 0, 'anticipation': 0.15, 'free_kick': 0, 'stamina': 0.1, 'goalkeeping': 0}},
+    {'name': 'LW',
+     'weight': {'shooting': 0.2, 'passing': 0.2, 'dribbling': 0.4, 'interception': 0, 'pace': 0.2, 'strength': 0,
+                'aggression': 0, 'anticipation': 0, 'free_kick': 0, 'stamina': 0, 'goalkeeping': 0}},
+    {'name': 'RW',
+     'weight': {'shooting': 0.2, 'passing': 0.2, 'dribbling': 0.4, 'interception': 0, 'pace': 0.2, 'strength': 0,
+                'aggression': 0, 'anticipation': 0, 'free_kick': 0, 'stamina': 0, 'goalkeeping': 0}},
+    {'name': 'CM',
+     'weight': {'shooting': 0.2, 'passing': 0.7, 'dribbling': 0, 'interception': 0, 'pace': 0, 'strength': 0,
+                'aggression': 0, 'anticipation': 0, 'free_kick': 0, 'stamina': 0.1, 'goalkeeping': 0}},
+    {'name': 'CB',
+     'weight': {'shooting': 0, 'passing': 0, 'dribbling': 0, 'interception': 0.5, 'pace': 0, 'strength': 0.25,
+                'aggression': 0, 'anticipation': 0.25, 'free_kick': 0, 'stamina': 0, 'goalkeeping': 0}},
+    {'name': 'LB',
+     'weight': {'shooting': 0, 'passing': 0.1, 'dribbling': 0.1, 'interception': 0.4, 'pace': 0.4, 'strength': 0,
+                'aggression': 0, 'anticipation': 0, 'free_kick': 0, 'stamina': 0, 'goalkeeping': 0}},
+    {'name': 'RB',
+     'weight': {'shooting': 0, 'passing': 0.1, 'dribbling': 0.1, 'interception': 0.4, 'pace': 0.4, 'strength': 0,
+                'aggression': 0, 'anticipation': 0, 'free_kick': 0, 'stamina': 0, 'goalkeeping': 0}},
+    {'name': 'GK',
+     'weight': {'shooting': 0, 'passing': 0.05, 'dribbling': 0, 'interception': 0, 'pace': 0, 'strength': 0,
+                'aggression': 0, 'anticipation': 0, 'free_kick': 0, 'stamina': 0, 'goalkeeping': 0.95}},
+    {'name': 'CAM',
+     'weight': {'shooting': 0.4, 'passing': 0.5, 'dribbling': 0, 'interception': 0, 'pace': 0, 'strength': 0.05,
+                'aggression': 0, 'anticipation': 0.05, 'free_kick': 0, 'stamina': 0, 'goalkeeping': 0}},
+    {'name': 'LM',
+     'weight': {'shooting': 0.1, 'passing': 0.5, 'dribbling': 0.2, 'interception': 0, 'pace': 0.2, 'strength': 0,
+                'aggression': 0, 'anticipation': 0, 'free_kick': 0, 'stamina': 0, 'goalkeeping': 0}},
+    {'name': 'RM',
+     'weight': {'shooting': 0.1, 'passing': 0.5, 'dribbling': 0.2, 'interception': 0, 'pace': 0.2, 'strength': 0,
+                'aggression': 0, 'anticipation': 0, 'free_kick': 0, 'stamina': 0, 'goalkeeping': 0}},
+    {'name': 'CDM',
+     'weight': {'shooting': 0, 'passing': 0.5, 'dribbling': 0, 'interception': 0.3, 'pace': 0, 'strength': 0.1,
+                'aggression': 0, 'anticipation': 0.1, 'free_kick': 0, 'stamina': 0, 'goalkeeping': 0}},
+]
+
 
 # Enum
+
+
 class Location(str, enum.Enum):
     ST = 'ST'
     LW = 'LW'
