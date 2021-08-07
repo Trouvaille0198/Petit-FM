@@ -286,6 +286,22 @@ leagues = [
             {
                 'name': '川崎前锋',
                 'finance': 14000
+            },
+            {
+                'name': '北京国安',
+                'finance': 14000
+            },
+            {
+                'name': '江苏苏宁',
+                'finance': 14000
+            },
+            {
+                'name': '埃因霍温',
+                'finance': 14000
+            },
+            {
+                'name': '桑托斯',
+                'finance': 14000
             }
         ]
     }

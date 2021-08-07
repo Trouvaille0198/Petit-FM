@@ -15,7 +15,7 @@ init_leagues()
 # 模拟联赛
 l1 = League(init_type=2, league_id=1)
 l2 = League(init_type=2, league_id=2)
-l1.start(start_year=2027, years=3, save_in_db=True)
+l1.start(start_year=2022, years=3, save_in_db=True)
 l2.start(start_year=2022, years=3, save_in_db=True)
 
 # 模拟比赛
