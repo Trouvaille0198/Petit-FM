@@ -69,12 +69,16 @@ class League:
         print("{} {}:{} {}".format(club_model1.name, scores[0], scores[1], club_model2.name))
 
     def start_season(self, date: Date):
-        crud.delete_game_by_attri(query_str='models.Game.season=="{}"'.format(date.year))
+        """
+        进行新赛季的比
+        :param date: 赛季时间
+        """
+        crud.delete_game_by_attri(query_str='models.Game.season=="{}"'.format(date.year))  # 删除数据库中同赛季的数据
 
         clubs = self.league_model.clubs
 
-        clubs_a = random.sample(clubs, len(clubs) // 2)
-        clubs_b = list(set(clubs) ^ set(clubs_a))
+        clubs_a = random.sample(clubs, len(clubs) // 2)  # 随机挑一半
+        clubs_b = list(set(clubs) ^ set(clubs_a))  # 剩下另一半
         schedule = []  # 比赛赛程
         for _ in range((len(clubs) - 1)):
             # 前半赛季的比赛
@@ -97,6 +101,8 @@ class League:
         info = Info()
         for _ in range(years):
             self.start_season(Date(start_year, 2, random.randint(1, 28)))
+
+            # 保存数据
             info.save(info.get_season_player_chart(
                 str(start_year)), filename='output_data/{}{}赛季球员数据榜.csv'.format(
                 self.league_model.name, str(start_year)), file_format='csv')

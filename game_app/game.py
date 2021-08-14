@@ -716,23 +716,28 @@ class Game:
         self.add_script('比赛结束！ {} {}:{} {}'.format(
             self.lteam.name, self.lteam.score, self.rteam.score, self.rteam.name))
         self.rate()  # 球员评分
-        # self.show_data()
 
-        self.save_in_db()
-        self.save_players_data()
+        self.save_in_db()  # 保存比赛
+        self.save_players_data()  # 保存球员数据的改变
         return self.lteam.score, self.rteam.score
 
     def save_players_data(self):
+        """
+        保存球员数据的改变
+        """
         for player in self.lteam.players:
             self.save_player_data(player)
         for player in self.rteam.players:
             self.save_player_data(player)
 
-    @staticmethod
-    def save_player_data(player: Player):
+    def save_player_data(self, player: Player):
+        """
+        保存球员数据的改变
+        :param player: 球员实例
+        """
         player_id = player.player_model.id
         lo = player.location
-        # 记录场上位置数
+        # region 记录场上位置数
         if lo == 'ST':
             crud.update_player(player_id, {'ST_num': player.player_model.ST_num + 1})
         elif lo == 'CM':
@@ -759,6 +764,60 @@ class Game:
             crud.update_player(player_id, {'CDM_num': player.player_model.CDM_num + 1})
         else:
             logger.warning('没有球员对应的位置！')
+        # endregion
+        # region 能力成长
+        if player.data['final_rating'] < 4:
+            crud.update_player(player_id, self.get_cap_improvement(player, 0.05))
+        elif 4 <= player.data['final_rating'] < 5:
+            crud.update_player(player_id, self.get_cap_improvement(player, 0.1))
+        elif 5 <= player.data['final_rating'] < 6:
+            crud.update_player(player_id, self.get_cap_improvement(player, 0.15))
+        elif 6 <= player.data['final_rating'] < 7:
+            crud.update_player(player_id, self.get_cap_improvement(player, 0.2))
+        elif 7 <= player.data['final_rating'] < 8:
+            crud.update_player(player_id, self.get_cap_improvement(player, 0.25))
+        elif 8 <= player.data['final_rating'] < 9:
+            crud.update_player(player_id, self.get_cap_improvement(player, 0.3))
+        elif player.data['final_rating'] >= 9:
+            crud.update_player(player_id, self.get_cap_improvement(player, 0.35))
+        else:
+            logger.error('没有球员相对应的评分！')
+        # endregion
+
+    @staticmethod
+    def get_cap_improvement(player, rating) -> dict:
+        """
+        根据评分，获取能力的提升值
+        :param player: 球员实例
+        :param rating: 外部函数传入的提升值
+        :return: 记录能力提升的字典
+        """
+        improvement = []
+        if player.location == Location.ST:
+            improvement = random.sample(['shooting', 'anticipation', 'strength', 'stamina'], 2)
+        elif player.location == Location.LW or player.location == Location.RW:
+            improvement = random.sample(['shooting', 'passing', 'dribbling', 'pace', 'stamina'], 2)
+        elif player.location == Location.CM:
+            improvement = random.sample(['shooting', 'passing', 'stamina'], 2)
+        elif player.location == Location.CB:
+            improvement = random.sample(['interception', 'anticipation', 'strength', 'stamina'], 2)
+        elif player.location == Location.LB or player.location == Location.RB:
+            improvement = random.sample(['passing', 'dribbling', 'interception', 'pace', 'stamina'], 2)
+        elif player.location == Location.GK:
+            rating /= 2
+            improvement = random.sample(['goalkeeping', 'stamina'], 2)
+        elif player.location == Location.CAM:
+            improvement = random.sample(['shooting', 'passing', 'anticipation', 'strength', 'stamina'], 2)
+        elif player.location == Location.LM or player.location == Location.RM:
+            improvement = random.sample(['shooting', 'passing', 'dribbling', 'pace', 'stamina'], 2)
+        elif player.location == Location.CDM:
+            improvement = random.sample(['passing', 'interception', 'strength', 'anticipation', 'stamina'], 2)
+        else:
+            logger.error('球员位置不正确！')
+        result = dict()
+        for capa in improvement:
+            result[capa] = player.rating[capa] + rating
+        return result
 
     def export_game(self) -> schemas.Game:
         created_time = datetime.datetime.now()
@@ -792,117 +851,9 @@ class Game:
         no_ball_team = self.lteam if hold_ball_team == self.rteam else self.rteam
         return hold_ball_team, no_ball_team
 
-    def show_data(self):
-        """
-        显示比赛数据，作debug用
-        """
-        logger.info('\n赛后统计')
-        logger.info('控球：{}，{}'.format(self.lteam.data['attempts'], self.rteam.data['attempts']))
-        logger.info('{}队'.format(self.lteam.name))
-        logger.info(self.lteam.data)
-        anal = {
-            '下底传中成功率': self.lteam.data['wing_cross_success'] / self.lteam.data['wing_cross'] if self.lteam.data[
-                'wing_cross'] else 0,
-            '边路内切成功率': self.lteam.data['under_cutting_success'] / self.lteam.data['under_cutting'] if
-            self.lteam.data[
-                'under_cutting'] else 0,
-            '倒三角成功率': self.lteam.data['pull_back_success'] / self.lteam.data['pull_back'] if self.lteam.data[
-                'pull_back'] else 0,
-            '中路渗透成功率': self.lteam.data['middle_attack_success'] / self.lteam.data['middle_attack'] if
-            self.lteam.data[
-                'middle_attack'] else 0,
-            '防守反击成功率': self.lteam.data['counter_attack_success'] / self.lteam.data['counter_attack'] if
-            self.lteam.data[
-                'counter_attack'] else 0
-        }
-        logger.info(anal)
-        for player in self.lteam.players:
-            logger.info('{}'.format(player.name))
-            logger.info(player.data)
-            anal = {
-                '射门转化率': player.data['goals'] / player.data['shots'] if player.data['shots'] else 0,
-                '传球成功率': player.data['pass_success'] / player.data['passes'] if player.data['passes'] else 0,
-                '过人成功率': player.data['dribble_success'] / player.data['dribbles'] if player.data[
-                    'dribbles'] else 0,
-                '抢断成功率': player.data['tackle_success'] / player.data['tackles'] if player.data['tackles'] else 0,
-                '争顶成功率': player.data['aerial_success'] / player.data['aerials'] if player.data['aerials'] else 0,
-                '扑救率': player.data['save_success'] / player.data['saves'] if player.data['saves'] else 0,
-                '终场体能': player.stamina
-            }
-            logger.info(anal)
-
-        logger.info('\n{}队'.format(self.rteam.name))
-        logger.info(self.rteam.data)
-        anal = {
-            '下底传中成功率': self.rteam.data['wing_cross_success'] / self.rteam.data['wing_cross'] if self.rteam.data[
-                'wing_cross'] else 0,
-            '边路内切成功率': self.rteam.data['under_cutting_success'] / self.rteam.data['under_cutting'] if
-            self.rteam.data[
-                'under_cutting'] else 0,
-            '倒三角成功率': self.rteam.data['pull_back_success'] / self.rteam.data['pull_back'] if self.rteam.data[
-                'pull_back'] else 0,
-            '中路渗透成功率': self.rteam.data['middle_attack_success'] / self.rteam.data['middle_attack'] if
-            self.rteam.data[
-                'middle_attack'] else 0,
-            '防守反击成功率': self.rteam.data['counter_attack_success'] / self.rteam.data['counter_attack'] if
-            self.rteam.data[
-                'counter_attack'] else 0
-        }
-        logger.info(anal)
-        for player in self.rteam.players:
-            logger.info('{}'.format(player.name))
-            logger.info(player.data)
-            anal = {
-                '射门转化率': player.data['goals'] / player.data['shots'] if player.data['shots'] else 0,
-                '传球成功率': player.data['pass_success'] / player.data['passes'] if player.data['passes'] else 0,
-                '过人成功率': player.data['dribble_success'] / player.data['dribbles'] if player.data[
-                    'dribbles'] else 0,
-                '抢断成功率': player.data['tackle_success'] / player.data['tackles'] if player.data['tackles'] else 0,
-                '争顶成功率': player.data['aerial_success'] / player.data['aerials'] if player.data['aerials'] else 0,
-                '扑救率': player.data['save_success'] / player.data['saves'] if player.data['saves'] else 0,
-                '终场体能': player.stamina
-            }
-            logger.info(anal)
-
-    def get_data(self):
-        """
-        获取比赛数据，作debug用
-        """
-        lanal = {
-            '下底传中成功率': self.lteam.data['wing_cross_success'] / self.lteam.data['wing_cross'] if self.lteam.data[
-                'wing_cross'] else 0,
-            '边路内切成功率': self.lteam.data['under_cutting_success'] / self.lteam.data['under_cutting'] if
-            self.lteam.data[
-                'under_cutting'] else 0,
-            '倒三角成功率': self.lteam.data['pull_back_success'] / self.lteam.data['pull_back'] if self.lteam.data[
-                'pull_back'] else 0,
-            '中路渗透成功率': self.lteam.data['middle_attack_success'] / self.lteam.data['middle_attack'] if
-            self.lteam.data[
-                'middle_attack'] else 0,
-            '防守反击成功率': self.lteam.data['counter_attack_success'] / self.lteam.data['counter_attack'] if
-            self.lteam.data[
-                'counter_attack'] else 0
-        }
-        ranal = {
-            '下底传中成功率': self.rteam.data['wing_cross_success'] / self.rteam.data['wing_cross'] if self.rteam.data[
-                'wing_cross'] else 0,
-            '边路内切成功率': self.rteam.data['under_cutting_success'] / self.rteam.data['under_cutting'] if
-            self.rteam.data[
-                'under_cutting'] else 0,
-            '倒三角成功率': self.rteam.data['pull_back_success'] / self.rteam.data['pull_back'] if self.rteam.data[
-                'pull_back'] else 0,
-            '中路渗透成功率': self.rteam.data['middle_attack_success'] / self.rteam.data['middle_attack'] if
-            self.rteam.data[
-                'middle_attack'] else 0,
-            '防守反击成功率': self.rteam.data['counter_attack_success'] / self.rteam.data['counter_attack'] if
-            self.rteam.data[
-                'counter_attack'] else 0
-        }
-        return self.lteam.data, self.rteam.data, lanal, ranal
-
     def rate(self):
         """
-        球员评分
+        球员评分，写入到每一个球员实例的.data['final_rating']中
         """
         # 动作次数评分
         average_actions = self.get_average_actions()
@@ -980,12 +931,23 @@ class Game:
             self.perf_rating(player.data['final_rating'], player)
 
     def get_average_actions(self) -> float:
+        """
+        获取动作数量的均值
+        :return: 均值
+        """
         _sum = 0
         for player in self.lteam.players:
             _sum += player.data['actions']
         return _sum / 11
 
-    def get_average_capa(self, capa_name: str, is_action=False, action_name: str = None):
+    def get_average_capa(self, capa_name: str, is_action=False, action_name: str = None) -> float:
+        """
+        获取指定数据的平均值
+        :param capa_name: 数据名
+        :param is_action: 是否是动作
+        :param action_name: 如果不是动作，则其相应的动作名
+        :return: 均值
+        """
         _sum = 0
         count = 0
         for player in self.lteam.players:
@@ -1026,6 +988,11 @@ class Game:
 
     @staticmethod
     def rate_by_actions(player, offset):
+        """
+        动作数量的评分办法
+        :param player: 球员实例
+        :param offset: 与均值的偏移值
+        """
         if 0.1 <= offset < 0.2:
             player.data['final_rating'] += 0.3
         if 0.2 <= offset < 0.4:
@@ -1049,6 +1016,11 @@ class Game:
 
     @staticmethod
     def rate_by_capa(player, offset):
+        """
+        各项能力数值的评分办法
+        :param player: 球员实例
+        :param offset: 与均值的偏移值
+        """
         if 0.1 <= offset < 0.2:
             player.data['final_rating'] += 0.3
         if 0.2 <= offset < 0.4:
@@ -1072,6 +1044,11 @@ class Game:
 
     @staticmethod
     def perf_rating(rating, player):
+        """
+        调整评分在正常范围内
+        :param rating: 评分
+        :param player: 球员实例
+        """
         rating = player.data['final_rating']
         if rating < 0:
             rating = 0
@@ -1080,6 +1057,10 @@ class Game:
         player.data['final_rating'] = float(retain_decimal(rating))
 
     def get_highest_rating_player(self):
+        """
+        获取全场mvp
+        :return: mvp球员实例
+        """
         player_list = [p for p in self.lteam.players]
         player_list.extend([p for p in self.rteam.players])
         player_list = [(p, p.data['final_rating']) for p in player_list]

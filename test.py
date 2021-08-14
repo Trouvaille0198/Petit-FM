@@ -10,11 +10,14 @@ def init_leagues():
         c = League(league_data=league, init_type=1)
 
 
+# 初始化
 config.init_current_path()
 init_leagues()
+
 # 模拟联赛
 l1 = League(init_type=2, league_id=1)
 l2 = League(init_type=2, league_id=2)
+
 l1.start(start_year=2022, years=3, save_in_db=True)
 l2.start(start_year=2022, years=3, save_in_db=True)
 
