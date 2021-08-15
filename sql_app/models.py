@@ -9,6 +9,7 @@ class Game(Base):
     __tablename__ = 'game'
     id = Column(Integer, primary_key=True, index=True)
 
+    type = Column(String)
     created_time = Column(DateTime)
     date = Column(String)
     season = Column(String)

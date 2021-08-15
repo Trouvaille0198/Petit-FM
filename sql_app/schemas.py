@@ -80,6 +80,7 @@ class Game(BaseModel):
 
     created_time: datetime
     date: str
+    type: str
     season: str
     script: str
     mvp: int

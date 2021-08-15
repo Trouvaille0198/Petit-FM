@@ -13,13 +13,14 @@ class Info:
     def switch2df(data: List[dict]):
         return pd.DataFrame(data)
 
-    def get_points_table(self, year: str) -> pd.DataFrame:
+    def get_points_table(self, year: str, game_type: str) -> pd.DataFrame:
         """
         获取赛季积分榜
+        :param game_type: 比赛类型
         :param year: 赛季年份
         :return: df
         """
-        query_str = 'models.Game.season=="{}"'.format(year)
+        query_str = "and_(models.Game.season=='{}', models.Game.type=='{}')".format(year, game_type)
         games = crud.get_games_by_attri(query_str=query_str)
         points_dict = dict()
         for game in games:
@@ -69,15 +70,16 @@ class Info:
         df = self.switch2df(points_list)
         s = df.apply(lambda row: row['胜球'] - row['输球'], axis=1)
         df.insert(7, '净胜球', s)
-        return df
+        return df.sort_values(by=['积分', '净胜球', '胜球'], ascending=[False, False, False])
 
-    def get_season_player_chart(self, year: str) -> pd.DataFrame:
+    def get_season_player_chart(self, year: str, game_type: str) -> pd.DataFrame:
         """
         获取赛季球员数据
+        :param game_type: 比赛类型
         :param year: 赛季年份
         :return: df
         """
-        query_str = 'models.Game.season=="{}"'.format(year)
+        query_str = "and_(models.Game.season=='{}', models.Game.type=='{}')".format(year, game_type)
         games = crud.get_games_by_attri(query_str=query_str)
         player_data_list = [player_data for game in games for game_team_info in game.teams for player_data in
                             game_team_info.player_data]

@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy import or_, and_, all_, any_
 from sql_app import models, schemas, database
 from sql_app.database import db_openish
 import config
@@ -8,7 +9,7 @@ import config
 @db_openish
 def create_game(game: schemas.Game, db: Session):
     db_game = models.Game(created_time=game.created_time, date=game.date, script=game.script, season=game.season,
-                          mvp=game.mvp)
+                          mvp=game.mvp, type=game.type)
     # 提交数据库，生成id
     db.add(db_game)
     db.commit()

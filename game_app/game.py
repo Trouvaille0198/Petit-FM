@@ -690,11 +690,12 @@ class Team:
 
 
 class Game:
-    def __init__(self, team1_model: models.Club, team2_model: models.Club, date: Date):
+    def __init__(self, team1_model: models.Club, team2_model: models.Club, date: Date, game_type: str):
         self.lteam = Team(self, team1_model)
         self.rteam = Team(self, team2_model)
         self.date = str(date)  # TODO 虚拟日期
         self.script = ''
+        self.type = game_type
 
     def start(self) -> tuple:
         self.add_script('比赛开始！')
@@ -824,6 +825,7 @@ class Game:
         teams = [self.lteam.export_game_team_info(created_time), self.rteam.export_game_team_info(created_time)]
 
         data = {
+            'type': self.type,
             'created_time': created_time,
             'date': self.date,
             'season': self.date[:4],
