@@ -9,8 +9,8 @@ from info_app import Info
 # 初始化
 config.init_current_path()
 
-world = LeagueSystem(True)
-world.start_season(2022, 8)
+world = LeagueSystem(init_leagues=False)
+world.start_season(2030, 1)
 
 # 模拟比赛
 # l1 = League(init_type=2, league_id=1)

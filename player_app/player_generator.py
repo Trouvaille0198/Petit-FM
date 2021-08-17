@@ -73,7 +73,7 @@ class PlayerGenerator:
         return name, translated_name
 
     def get_name(self):
-        pro = {'cn': 5, 'jp': 1, 'en': 94}
+        pro = {'cn': 20, 'jp': 5, 'en': 975}
         nation = select_by_pro(pro)
         if nation == 'cn':
             return 'cn', *self.get_cn_name()

@@ -786,7 +786,7 @@ class Game:
         # endregion
 
     @staticmethod
-    def get_cap_improvement(player, rating) -> dict:
+    def get_cap_improvement(player: Player, rating) -> dict:
         """
         根据评分，获取能力的提升值
         :param player: 球员实例
@@ -817,7 +817,11 @@ class Game:
             logger.error('球员位置不正确！')
         result = dict()
         for capa in improvement:
-            result[capa] = player.rating[capa] + rating
+            limit = eval('player.player_model.{}_limit'.format(capa))
+            if player.rating[capa] + rating <= limit:
+                result[capa] = float(retain_decimal(player.rating[capa] + rating))
+            else:
+                result[capa] = limit
         return result
 
     def export_game(self) -> schemas.Game:
