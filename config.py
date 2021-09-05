@@ -4,7 +4,7 @@ import os
 import time
 from loguru import logger
 
-CWD_URL = 'C:/Users/Tyeah/PycharmProjects/Petit-FM'
+CWD_URL = str(Path.cwd())
 
 
 def init_current_path():
@@ -12,7 +12,6 @@ def init_current_path():
     确定根目录，在整个游戏开始前调用
     """
     global CWD_URL
-    CWD_URL = str(Path.cwd())
     logger.info("根目录为：{}".format(CWD_URL))
 
 
@@ -397,7 +396,8 @@ class Location(str, enum.Enum):
 
 # 日志收集器
 # LOG_FOLDER = os.getcwd() + '\\logs'
-LOG_FOLDER = "C:/Users/Tyeah/PycharmProjects/Petit-FM/logs"
+
+LOG_FOLDER = "{}/logs".format(CWD_URL)
 if not os.path.exists(LOG_FOLDER):
     os.mkdir(LOG_FOLDER)
 t = time.strftime("%m_%d")

@@ -48,13 +48,13 @@ class PlayerGenerator:
         self.translator = Translator()
 
     def import_names(self):
-        with open(config.CWD_URL + '/assets/English_names.txt') as file_obj:
+        with open(config.CWD_URL + '/assets/English_names.txt', encoding='utf-8') as file_obj:
             for line in file_obj:
                 self.en_names.append(line.rstrip().split('|')[:2])
-        with open(config.CWD_URL + '/assets/Chinese_names.txt') as file_obj:
+        with open(config.CWD_URL + '/assets/Chinese_names.txt', encoding='utf-8') as file_obj:
             for line in file_obj:
                 self.cn_names.append(line.rstrip())
-        with open(config.CWD_URL + '/assets/Japanese_names.txt') as file_obj:
+        with open(config.CWD_URL + '/assets/Japanese_names.txt', encoding='utf-8') as file_obj:
             for line in file_obj:
                 self.jp_names.append(line.rstrip())
 
