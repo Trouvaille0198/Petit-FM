@@ -32,7 +32,8 @@ class LeagueSystem:
 
     def promote_n_relegate(self, year):
         """
-        联赛升降级设置
+        联赛升降级设置，根据赛季积分榜，在数据库中修改应升级/降级的球队的联赛级别
+        :param year: 赛季开始年份
         """
         info = Info()
         df1 = info.get_points_table(year, self.l1.league_model.name)  # 世超

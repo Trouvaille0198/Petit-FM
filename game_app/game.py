@@ -12,6 +12,7 @@ from sql_app import crud
 from sql_app import models, schemas
 from club_app import Club
 
+# 球员标准能力，DEBUG用
 DEFAULT_RATING = {
     "shooting": 50,  # 射门
     "passing": 50,  # 传球
@@ -28,6 +29,7 @@ DEFAULT_RATING = {
 
 
 class Player:
+    # 比赛中的球员类
     def __init__(self, player_model: models.Player, location: str, stamina: int = 100):
         self.player_model = player_model
         self.name = player_model.translated_name
