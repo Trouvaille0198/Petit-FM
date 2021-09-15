@@ -404,5 +404,5 @@ t = time.strftime("%m_%d")
 
 logger = logger
 # logger.remove(handler_id=None)  # 禁用控制台输出
-logger.add("{}\\log_{}.log".format(LOG_FOLDER, t), format="{message}",
+logger.add("{}/log_{}.log".format(LOG_FOLDER, t), format="{message}",
            rotation="1 day", encoding="utf-8", retention="300 days")

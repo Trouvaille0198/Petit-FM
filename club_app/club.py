@@ -29,7 +29,7 @@ class Club:
         self.save_in_db(init=True)
         # 随机初始化教练和球员
         generator = PlayerGenerator()
-        coach = Coach(generator=generator,init_type=1)
+        coach = Coach(generator=generator, init_type=1)
         coach.switch_club(self.id)
         for _ in range(11):
             player = Player(generator=generator, init_type=1)
